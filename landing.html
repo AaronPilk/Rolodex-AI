@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <title>Rolodex — Never lose touch again.</title>
+  <meta name="description" content="The AI that keeps your people close. Rolodex remembers everyone in your life and reaches out at exactly the right moments — so relationships don't drift away.">
+  <style>
+    :root {
+      --imsg-blue: #007AFF;
+      --imsg-blue-light: #2997FF;
+      --imsg-bubble-grad: linear-gradient(180deg, #2997FF 0%, #007AFF 100%);
+      --bubble-gray: #E9E9EB;
+      --bg: #000000;
+      --bg-elev: #0a0a0a;
+      --bg-card: #111113;
+      --text: #ffffff;
+      --text-2: rgba(255,255,255,0.78);
+      --text-3: rgba(255,255,255,0.55);
+      --text-4: rgba(255,255,255,0.30);
+      --separator: rgba(255,255,255,0.10);
+      --separator-strong: rgba(255,255,255,0.18);
+      --accent-purple: #AF52DE;
+      --accent-pink: #FF2D55;
+      --accent-green: #34C759;
+      --accent-orange: #FF9500;
+
+      --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ======= Mesh gradient background ======= */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(0,122,255,0.18), transparent 60%),
+        radial-gradient(700px 500px at 85% 5%, rgba(175,82,222,0.15), transparent 60%),
+        radial-gradient(800px 600px at 50% 100%, rgba(255,45,85,0.10), transparent 60%);
+    }
+
+    /* ======= Nav ======= */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      background: rgba(0,0,0,0.55);
+      border-bottom: 1px solid var(--separator);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--imsg-bubble-grad);
+      display: grid; place-items: center;
+      color: white; font-weight: 700;
+      font-size: 14px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 4px 12px rgba(0,122,255,0.3);
+    }
+
+    .nav-links {
+      display: flex; gap: 28px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-links a { color: var(--text-2); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: white;
+      color: black;
+      padding: 8px 16px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      transition: transform 0.15s var(--ease-out-quint);
+    }
+    .nav-cta:hover { transform: scale(1.04); }
+
+    /* ======= Section base ======= */
+    section { position: relative; z-index: 1; }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ======= HERO ======= */
+    .hero {
+      padding: 90px 0 80px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--imsg-blue-light);
+      background: rgba(0,122,255,0.10);
+      border: 1px solid rgba(0,122,255,0.22);
+      padding: 6px 14px;
+      border-radius: 980px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .eyebrow .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--imsg-blue-light);
+      box-shadow: 0 0 0 0 rgba(41,151,255,0.6);
+      animation: pulseBlue 2s infinite;
+    }
+    @keyframes pulseBlue {
+      0%,100% { box-shadow: 0 0 0 0 rgba(41,151,255,0.6); }
+      50% { box-shadow: 0 0 0 6px rgba(41,151,255,0); }
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 7vw, 80px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+      max-width: 14ch;
+      margin: 0 auto 22px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .accent {
+      background: linear-gradient(120deg, #2997FF 0%, #AF52DE 50%, #FF2D55 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero p.lede {
+      font-size: clamp(17px, 1.8vw, 21px);
+      color: var(--text-2);
+      max-width: 640px;
+      margin: 0 auto 36px;
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .btn-primary-lg {
+      background: white;
+      color: black;
+      padding: 14px 26px;
+      border-radius: 980px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.2s var(--ease-out-quint);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-lg:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,255,255,0.15); }
+
+    .btn-secondary-lg {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      padding: 14px 26px;
+      border-radius: 980px;
+      font-size: 16px;
+      font-weight: 600;
+      border: 1px solid var(--separator-strong);
+      transition: all 0.2s var(--ease-out-quint);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(12px);
+    }
+    .btn-secondary-lg:hover { background: rgba(255,255,255,0.12); }
+
+    /* ======= Hero phone mockup ======= */
+    .phone-wrap {
+      position: relative;
+      max-width: 360px;
+      margin: 0 auto;
+      padding: 14px;
+      background: linear-gradient(180deg, #2a2a2c, #0a0a0c);
+      border-radius: 56px;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow:
+        0 60px 120px rgba(0,0,0,0.6),
+        0 30px 60px rgba(0,122,255,0.15),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .phone {
+      background: #000;
+      border-radius: 44px;
+      padding: 28px 16px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notch {
+      position: absolute;
+      top: 8px; left: 50%;
+      transform: translateX(-50%);
+      width: 110px; height: 28px;
+      background: #000;
+      border-radius: 980px;
+      z-index: 2;
+    }
+
+    .phone-header {
+      text-align: center;
+      padding: 14px 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 14px;
+    }
+    .phone-name {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 4px;
+    }
+    .phone-contact {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .phone-bubbles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 4px 10px;
+      text-align: left;
+    }
+    .ph-bubble {
+      max-width: 78%;
+      padding: 9px 14px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.35;
+      letter-spacing: -0.005em;
+    }
+    .ph-bubble.out {
+      background: var(--imsg-bubble-grad);
+      color: white;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    .ph-bubble.in {
+      background: #2c2c2e;
+      color: white;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+    }
+    .ph-time {
+      font-size: 10px;
+      color: var(--text-3);
+      text-align: center;
+      margin: 8px 0 4px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ======= Logos / social proof ======= */
+    .marquee {
+      padding: 60px 0 30px;
+      text-align: center;
+    }
+    .marquee p {
+      font-size: 12px;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .marquee-row {
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0.6;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+    .marquee-row span { color: var(--text-2); }
+
+    /* ======= Story / problem ======= */
+    .story {
+      padding: 100px 0 80px;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .story h2 {
+      font-size: clamp(32px, 4.5vw, 52px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+    .story p {
+      font-size: 19px;
+      color: var(--text-2);
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .story p strong {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* ======= How it works ======= */
+    .how {
+      padding: 100px 0;
+    }
+    .section-head {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-head h2 {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      line-height: 1.05;
+    }
+    .section-head p {
+      font-size: 18px;
+      color: var(--text-3);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--separator);
+      border-radius: 24px;
+      padding: 32px 28px;
+      transition: all 0.3s var(--ease-out-quint);
+    }
+    .step:hover {
+      transform: translateY(-4px);
+      border-color: var(--separator-strong);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--imsg-bubble-grad);
+      display: grid; place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 22px;
+      box-shadow: 0 6px 16px rgba(0,122,255,0.35);
+    }
+    .step h3 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: 14px;
+      color: var(--text-3);
+      line-height: 1.6;
+    }
+
+    /* ======= Feature stack ======= */
+    .features {
+      padding: 100px 0;
+    }
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+    .feature.reverse { grid-template-columns: 1fr 1fr; }
+    .feature.reverse .feature-text { order: 2; }
+
+    .feature-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--imsg-blue-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+    .feature h3 {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .feature p {
+      font-size: 17px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .feature ul {
+      list-style: none;
+      padding: 0;
+    }
+    .feature ul li {
+      font-size: 15px;
+      color: var(--text-2);
+      padding: 6px 0 6px 28px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .feature ul li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 12px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--imsg-blue);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 11px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .feature-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--separator);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-visual::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(400px 300px at 30% 30%, rgba(0,122,255,0.15), transparent 60%),
+        radial-gradient(300px 250px at 80% 80%, rgba(175,82,222,0.10), transparent 60%);
+      pointer-events: none;
+    }
+
+    /* iMessage demo inside feature visual */
+    .imsg-demo {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .imsg-demo .ts {
+      font-size: 11px;
+      color: var(--text-3);
+      text-align: center;
+      margin: 6px 0;
+      letter-spacing: 0.03em;
+    }
+    .imsg-demo .b {
+      max-width: 84%;
+      padding: 9px 14px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.35;
+      letter-spacing: -0.005em;
+    }
+    .imsg-demo .b.out {
+      background: var(--imsg-bubble-grad);
+      color: white;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    .imsg-demo .b.in {
+      background: #2c2c2e;
+      color: white;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+    }
+
+    /* AI brain visualization */
+    .brain {
+      position: relative;
+      width: 280px; height: 280px;
+      z-index: 1;
+    }
+    .brain-orb {
+      position: absolute;
+      inset: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #2997FF, #007AFF 50%, #5856D6 100%);
+      box-shadow:
+        0 0 80px rgba(0,122,255,0.5),
+        inset 0 0 40px rgba(255,255,255,0.2);
+      animation: float 6s ease-in-out infinite;
+    }
+    .brain-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0,122,255,0.3);
+      animation: spin 20s linear infinite;
+    }
+    .brain-ring.r1 { inset: 30px; border-color: rgba(0,122,255,0.4); }
+    .brain-ring.r2 { inset: 0; border-color: rgba(175,82,222,0.3); animation-duration: 30s; animation-direction: reverse; }
+    .brain-node {
+      position: absolute;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 12px white;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Tier visualization */
+    .tier-stack {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tier-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--separator);
+    }
+    .tier-row .pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 980px;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .tier-row .name { font-size: 14px; font-weight: 500; flex: 1; }
+    .tier-row .freq { font-size: 12px; color: var(--text-3); }
+
+    /* ======= Pricing ======= */
+    .pricing {
+      padding: 100px 0;
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--separator);
+      border-radius: 24px;
+      padding: 32px 28px;
+      transition: all 0.3s var(--ease-out-quint);
+      position: relative;
+    }
+    .price-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--separator-strong);
+    }
+    .price-card.featured {
+      background: linear-gradient(180deg, rgba(0,122,255,0.10) 0%, var(--bg-card) 100%);
+      border-color: rgba(0,122,255,0.40);
+      box-shadow: 0 30px 80px rgba(0,122,255,0.12);
+    }
+    .price-card.featured::before {
+      content: "Most popular";
+      position: absolute;
+      top: -1px; right: 24px;
+      transform: translateY(-50%);
+      background: var(--imsg-bubble-grad);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 980px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 6px 16px rgba(0,122,255,0.4);
+    }
+
+    .price-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--imsg-blue-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .price-amt {
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-amt small {
+      font-size: 16px;
+      color: var(--text-3);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .price-tag {
+      font-size: 14px;
+      color: var(--text-3);
+      margin-bottom: 24px;
+    }
+    .price-card hr {
+      border: none;
+      border-top: 1px solid var(--separator);
+      margin: 0 0 20px;
+    }
+    .price-features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 28px;
+    }
+    .price-features li {
+      font-size: 14px;
+      color: var(--text-2);
+      padding: 7px 0 7px 26px;
+      position: relative;
+      line-height: 1.4;
+    }
+    .price-features li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 11px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: rgba(0,122,255,0.15);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007AFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 9px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .price-cta {
+      width: 100%;
+      padding: 12px;
+      border-radius: 980px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      transition: transform 0.15s var(--ease-out-quint);
+    }
+    .price-cta.primary {
+      background: white;
+      color: black;
+    }
+    .price-cta.secondary {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid var(--separator-strong);
+    }
+    .price-cta:hover { transform: translateY(-1px); }
+
+    /* ======= FAQ ======= */
+    .faq {
+      padding: 80px 0;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--separator);
+      padding: 22px 0;
+    }
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: -0.01em;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--imsg-blue-light); }
+    .faq-q .arrow {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      display: grid; place-items: center;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .arrow { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--ease-out-quint);
+    }
+    .faq-a-inner {
+      padding-top: 14px;
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+    .faq-item.open .faq-a { max-height: 320px; }
+
+    /* ======= Final CTA ======= */
+    .final-cta {
+      padding: 100px 0 120px;
+      text-align: center;
+    }
+    .final-cta h2 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      max-width: 14ch;
+      margin: 0 auto 24px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.65) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .final-cta p {
+      font-size: 18px;
+      color: var(--text-3);
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    /* Waitlist input */
+    .waitlist {
+      display: flex;
+      gap: 8px;
+      max-width: 460px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.06);
+      padding: 6px;
+      border-radius: 980px;
+      border: 1px solid var(--separator-strong);
+      backdrop-filter: blur(10px);
+    }
+    .waitlist input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      padding: 10px 18px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    .waitlist input::placeholder { color: var(--text-3); }
+    .waitlist button {
+      background: white;
+      color: black;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 980px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.15s;
+    }
+    .waitlist button:hover { transform: scale(1.04); }
+
+    /* ======= Footer ======= */
+    footer {
+      border-top: 1px solid var(--separator);
+      padding: 40px 0 60px;
+      background: var(--bg-elev);
+    }
+    .footer-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+
+    /* ======= Responsive ======= */
+    @media (max-width: 900px) {
+      .steps { grid-template-columns: 1fr; }
+      .feature, .feature.reverse { grid-template-columns: 1fr; gap: 30px; }
+      .feature.reverse .feature-text { order: 0; }
+      .price-grid { grid-template-columns: 1fr; max-width: 380px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 0 50px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ====== NAV ====== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <div class="brand-mark">R</div>
+        <span>Rolodex</span>
+      </a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <button class="nav-cta" onclick="document.getElementById('waitlist-input').focus()">Join waitlist</button>
+    </div>
+  </nav>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow"><span class="dot"></span>Now in Private Beta</div>
+      <h1>Never let another <span class="accent">friendship</span> drift away.</h1>
+      <p class="lede">Rolodex is the AI that quietly remembers everyone in your life — and reaches out at exactly the right moments, in your voice, so the people who matter never feel forgotten.</p>
+      <div class="hero-actions">
+        <button class="btn-primary-lg" onclick="document.getElementById('waitlist-input').focus()">
+          Get early access
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <a href="#how" class="btn-secondary-lg">
+          See how it works
+        </a>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="phone-header">
+            <div class="phone-name">Rolodex drafted →</div>
+            <div class="phone-contact">Mike Johnson</div>
+          </div>
+          <div class="phone-bubbles">
+            <div class="ph-time">Last spoke · Mar 14, 2024</div>
+            <div class="ph-bubble out">yo just saw your reel — that fight scene was filthy</div>
+            <div class="ph-bubble in">aaaa thanks man means a lot. been a minute, you good?</div>
+            <div class="ph-time" style="margin-top: 12px">Today · Drafted by Rolodex</div>
+            <div class="ph-bubble out">mike!! random thought — you back in PGH this summer? been thinking about that game vs Mt Lebo when you almost got ejected lol</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Marquee / proof ====== -->
+  <section class="marquee">
+    <div class="container">
+      <p>Built for people who care about people</p>
+      <div class="marquee-row">
+        <span>Founders</span>
+        <span>Talent agents</span>
+        <span>Real-estate pros</span>
+        <span>Financial advisors</span>
+        <span>Recruiters</span>
+        <span>Anyone with a network worth keeping</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== STORY ====== -->
+  <section class="story">
+    <div class="container">
+      <h2>The friend you didn't text. The mentor you forgot to thank. The client who went quiet.</h2>
+      <p>It's not that you don't care. It's that life is loud, and the people who once mattered most slip into the silence — until one day a name pops up on Facebook and you think <em>"damn, I haven't talked to him in five years."</em></p>
+      <p><strong>Rolodex makes that silence impossible.</strong> It quietly tracks who matters to you, what you know about them, and the natural rhythm of your relationship — then reaches out at the right moment, in your voice, with something real to say.</p>
+    </div>
+  </section>
+
+  <!-- ====== HOW IT WORKS ====== -->
+  <section id="how" class="how">
+    <div class="container">
+      <div class="section-head">
+        <h2>It works like a thoughtful friend who never forgets.</h2>
+        <p>No mass blasts. No "Happy birthday!" autoreplies. Just real, personalized messages from you — drafted by an AI that actually knows the person.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Add your people</h3>
+          <p>Pull them from your iMessage history, Mac Contacts, or just type a name. Drop in whatever you remember — high school, baseball, that road trip in 2019. The more context, the better the messages.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Set the rhythm</h3>
+          <p>Inner Circle every 3 weeks. Old college friends every few months. Loose ties twice a year. Rolodex learns the right cadence for each person and adjusts when life happens.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Approve & send</h3>
+          <p>Each morning Rolodex shows you who's due, with a draft message ready in your voice. Tap send — it goes out as a real iMessage from you. They reply to you, not a bot.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FEATURES ====== -->
+  <section id="features" class="features">
+    <div class="container">
+
+      <!-- Feature 1 — iMessage native -->
+      <div class="feature">
+        <div class="feature-text">
+          <span class="feature-tag">Real iMessage. From your number.</span>
+          <h3>Messages that look like you wrote them. Because you did.</h3>
+          <p>No cold-outreach platform. No "sent via" tags. Rolodex sends real iMessages from your phone number — tone matched to your previous conversations with that specific person.</p>
+          <ul>
+            <li>Pulls writing patterns from your real iMessage history</li>
+            <li>Matches tone per relationship — formal with the boss, lowercase with the bro</li>
+            <li>Always your final approval before anything sends</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="imsg-demo">
+            <div class="ts">Coach Robertson · Today</div>
+            <div class="b out">Coach! Caught the section playoffs writeup — saw they're naming the field after you next spring. About time. Any chance I can buy you breakfast next time I'm home?</div>
+            <div class="b in">son, you made my whole week. I'll bring the playbook from '08 — bring an appetite</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2 — AI brain -->
+      <div class="feature reverse">
+        <div class="feature-text">
+          <span class="feature-tag">Your relational memory, externalized.</span>
+          <h3>An AI that actually remembers people.</h3>
+          <p>Every detail you share — how you met, their dog's name, what they're working on — becomes part of a private memory that makes every future message feel uncannily personal.</p>
+          <ul>
+            <li>Learns who matters most by signal, not just dates</li>
+            <li>Watches your communication patterns to spot decay before it happens</li>
+            <li>Recognizes life events from context you paste in (LinkedIn, FB birthdays, IG posts)</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="brain">
+            <div class="brain-ring r1"></div>
+            <div class="brain-ring r2"></div>
+            <div class="brain-orb"></div>
+            <div class="brain-node" style="top: 20px; left: 50%;"></div>
+            <div class="brain-node" style="top: 50%; right: 10px;"></div>
+            <div class="brain-node" style="bottom: 30px; left: 30px;"></div>
+            <div class="brain-node" style="bottom: 50%; left: 5px;"></div>
+            <div class="brain-node" style="top: 30px; right: 30px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3 — Tier system -->
+      <div class="feature">
+        <div class="feature-text">
+          <span class="feature-tag">A relationship operating system.</span>
+          <h3>Different people. Different rhythms.</h3>
+          <p>Rolodex sorts your people into 5 tiers — from inner circle to faint-but-worth-it ties — each with its own cadence. Your best friend gets a rhythm. Your old high-school buddy gets a rhythm. Nobody falls through.</p>
+          <ul>
+            <li>5 tiers with smart default cadences (or set your own)</li>
+            <li>Auto-snoozes when conversations are active — never spammy</li>
+            <li>Birthday-aware. Job-change-aware. Life-event-aware.</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="tier-stack">
+            <div class="tier-row"><span class="pill" style="background:rgba(255,59,48,0.15);color:#FF6961">T1</span><span class="name">Inner Circle</span><span class="freq">~3 weeks</span></div>
+            <div class="tier-row"><span class="pill" style="background:rgba(255,149,0,0.15);color:#FFB04F">T2</span><span class="name">Strong Ties</span><span class="freq">~2 months</span></div>
+            <div class="tier-row"><span class="pill" style="background:rgba(255,204,0,0.15);color:#FFE066">T3</span><span class="name">Warm Contacts</span><span class="freq">~4 months</span></div>
+            <div class="tier-row"><span class="pill" style="background:rgba(52,199,89,0.15);color:#5BD968">T4</span><span class="name">Loose Ties</span><span class="freq">~8 months</span></div>
+            <div class="tier-row"><span class="pill" style="background:rgba(90,200,250,0.15);color:#5AC8FA">T5</span><span class="name">Faint Ties</span><span class="freq">~12 months</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== PRICING ====== -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <div class="section-head">
+        <h2>Built for individuals.<br>Loved by network-driven teams.</h2>
+        <p>Start with a 14-day free trial. Cancel any time, keep your data.</p>
+      </div>
+      <div class="price-grid">
+
+        <div class="price-card">
+          <div class="price-name">Personal</div>
+          <div class="price-amt">$14<small>/mo</small></div>
+          <div class="price-tag">For your own life.</div>
+          <hr>
+          <ul class="price-features">
+            <li>Up to 250 people</li>
+            <li>iMessage send (Mac required)</li>
+            <li>Daily smart digest</li>
+            <li>AI message drafting</li>
+            <li>5-tier cadence system</li>
+            <li>Birthday & life-event awareness</li>
+          </ul>
+          <button class="price-cta secondary">Start free trial</button>
+        </div>
+
+        <div class="price-card featured">
+          <div class="price-name">Pro</div>
+          <div class="price-amt">$49<small>/mo</small></div>
+          <div class="price-tag">For relationship-driven careers.</div>
+          <hr>
+          <ul class="price-features">
+            <li>Up to 2,000 people</li>
+            <li>Everything in Personal</li>
+            <li>CRM-grade pipeline view</li>
+            <li>Custom relationship tags & filters</li>
+            <li>Email + LinkedIn outreach</li>
+            <li>Auto-import from CSV / Apollo / Sales Nav</li>
+            <li>Voice-cloned message tone</li>
+            <li>Priority support</li>
+          </ul>
+          <button class="price-cta primary">Start free trial</button>
+        </div>
+
+        <div class="price-card">
+          <div class="price-name">Teams</div>
+          <div class="price-amt">$99<small>/seat/mo</small></div>
+          <div class="price-tag">For agencies, brokerages, advisors.</div>
+          <hr>
+          <ul class="price-features">
+            <li>Unlimited people per seat</li>
+            <li>Everything in Pro</li>
+            <li>Shared books of business</li>
+            <li>Team-wide deal-flow alerts</li>
+            <li>Salesforce / HubSpot sync</li>
+            <li>Compliance audit log</li>
+            <li>SOC 2 + admin SSO</li>
+            <li>Dedicated CSM</li>
+          </ul>
+          <button class="price-cta secondary">Talk to sales</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section id="faq" class="faq">
+    <div class="section-head">
+      <h2 style="font-size: clamp(28px,4vw,42px);">Frequently asked.</h2>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Will my friends know it's an AI? <div class="arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="faq-a"><div class="faq-a-inner">No. Messages send from your real phone number as real iMessages, written in your voice using context only you know about them. They reply to you. You read it. You respond. Rolodex never inserts itself.</div></div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">How does it actually send messages? <div class="arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="faq-a"><div class="faq-a-inner">Rolodex runs as a Mac app and uses Apple's Messages framework to send iMessages from your number — the same way Messages.app does it. You approve every message before it goes out. Messages sync to your iPhone via iCloud automatically.</div></div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Do I need a Mac? <div class="arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="faq-a"><div class="faq-a-inner">For full iMessage send: yes. iOS doesn't allow third-party apps to send SMS or iMessage in the background — that's an Apple restriction we can't work around. Pro and Teams plans include email and LinkedIn outreach for non-Mac users.</div></div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Where does my data live? <div class="arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="faq-a"><div class="faq-a-inner">Locally on your Mac, encrypted at rest. Cloud sync is opt-in (end-to-end encrypted). Your contact list is never shared, sold, or used to train models. SOC 2 audited.</div></div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Can I import from my CRM? <div class="arrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div></div>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Pro supports CSV import and direct sync with HubSpot, Salesforce, Apollo, and Sales Navigator. Teams plan adds bidirectional sync.</div></div>
+    </div>
+  </section>
+
+  <!-- ====== FINAL CTA ====== -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Stop letting people you love disappear.</h2>
+      <p>Join the waitlist. We're letting people in slowly to make sure every message goes out perfect.</p>
+      <form class="waitlist" onsubmit="event.preventDefault(); submitWait()">
+        <input type="email" placeholder="you@yourname.com" id="waitlist-input" required>
+        <button type="submit">Join waitlist</button>
+      </form>
+      <p style="font-size: 12px; color: var(--text-4); margin-top: 18px;">No spam. We'll email when a spot opens up.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>© Rolodex · Made for the people who care about people.</div>
+      <div style="display: flex; gap: 24px;">
+        <a href="#" style="color: var(--text-3);">Privacy</a>
+        <a href="#" style="color: var(--text-3);">Terms</a>
+        <a href="#" style="color: var(--text-3);">@rolodex</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function submitWait() {
+      const inp = document.getElementById('waitlist-input');
+      if (!inp.value.includes('@')) return;
+      const form = inp.closest('form');
+      form.innerHTML = '<div style="color: #34C759; font-weight: 600; padding: 10px 18px;">✓ You\'re in. We\'ll email you soon.</div>';
+    }
+
+    // open first FAQ on load
+    document.querySelector('.faq-item')?.classList.add('open');
+  </script>
+</body>
+</html>

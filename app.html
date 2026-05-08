@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#007AFF">
+  <title>Rolodex — Your relationships, on autopilot</title>
+  <style>
+    /* ==================================================
+       ROLODEX — Apple-grade dashboard
+       Designed for macOS Sonoma / iOS 18 aesthetic
+       ================================================== */
+
+    :root {
+      /* iOS / macOS system colors — light mode */
+      --imsg-blue: #007AFF;
+      --imsg-blue-dark: #0051D5;
+      --imsg-bubble-grad: linear-gradient(180deg, #2997FF 0%, #007AFF 100%);
+      --bubble-gray: #E9E9EB;
+      --bubble-gray-text: #1c1c1e;
+
+      --red: #FF3B30;
+      --orange: #FF9500;
+      --yellow: #FFCC00;
+      --green: #34C759;
+      --teal: #5AC8FA;
+      --purple: #AF52DE;
+      --pink: #FF2D55;
+
+      --label: #1c1c1e;
+      --label-2: #3c3c43;
+      --label-3: #6e6e73;
+      --label-4: #aeaeb2;
+
+      --bg: #f5f5f7;
+      --bg-elev-1: #ffffff;
+      --bg-elev-2: #fafafa;
+      --bg-tint: rgba(0,122,255,0.06);
+      --bg-tint-strong: rgba(0,122,255,0.12);
+
+      --separator: rgba(60,60,67,0.10);
+      --separator-strong: rgba(60,60,67,0.18);
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,0.08);
+      --shadow-xl: 0 24px 60px rgba(0,0,0,0.12);
+
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-pill: 980px;
+
+      --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bubble-gray: #2c2c2e;
+        --bubble-gray-text: #f2f2f7;
+
+        --label: #ffffff;
+        --label-2: rgba(235,235,245,0.78);
+        --label-3: rgba(235,235,245,0.55);
+        --label-4: rgba(235,235,245,0.30);
+
+        --bg: #000000;
+        --bg-elev-1: #1c1c1e;
+        --bg-elev-2: #2c2c2e;
+        --bg-tint: rgba(10,132,255,0.16);
+        --bg-tint-strong: rgba(10,132,255,0.28);
+
+        --separator: rgba(255,255,255,0.08);
+        --separator-strong: rgba(255,255,255,0.14);
+
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.20);
+        --shadow-md: 0 4px 16px rgba(0,0,0,0.30);
+        --shadow-lg: 0 16px 40px rgba(0,0,0,0.40);
+        --shadow-xl: 0 24px 60px rgba(0,0,0,0.50);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: var(--label);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* mesh gradient background for depth */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(0,122,255,0.10), transparent 60%),
+        radial-gradient(800px 600px at 100% 0%, rgba(175,82,222,0.08), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(52,199,89,0.06), transparent 60%);
+      z-index: 0;
+    }
+
+    button { font-family: inherit; cursor: pointer; }
+
+    /* =================== APP SHELL =================== */
+
+    .app {
+      display: grid;
+      grid-template-columns: 268px 1fr;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =================== SIDEBAR =================== */
+
+    .sidebar {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: saturate(180%) blur(24px);
+      -webkit-backdrop-filter: saturate(180%) blur(24px);
+      border-right: 1px solid var(--separator);
+      padding: 22px 14px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .sidebar { background: rgba(28,28,30,0.65); }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 6px 10px;
+      margin-bottom: 26px;
+    }
+
+    .brand-mark {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: var(--imsg-bubble-grad);
+      display: grid; place-items: center;
+      color: white; font-weight: 700;
+      font-size: 17px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        0 6px 16px rgba(0,122,255,0.35);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      color: var(--label-3);
+      margin-top: -1px;
+    }
+
+    .nav-section { margin-bottom: 22px; }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--label-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0 10px;
+      margin-bottom: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--label);
+      transition: background 0.15s ease, transform 0.15s ease;
+      user-select: none;
+    }
+
+    .nav-item:hover { background: var(--bg-tint); }
+    .nav-item:active { transform: scale(0.98); }
+
+    .nav-item.active {
+      background: var(--imsg-blue);
+      color: white;
+      box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+    }
+    .nav-item.active .nav-count { background: rgba(255,255,255,0.25); color: white; }
+
+    .nav-icon {
+      width: 18px; height: 18px;
+      display: grid; place-items: center;
+      flex-shrink: 0;
+    }
+
+    .nav-icon svg { width: 100%; height: 100%; }
+
+    .nav-label-text { flex: 1; }
+
+    .nav-count {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 980px;
+      background: var(--bg-elev-2);
+      color: var(--label-2);
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .tier-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* =================== MAIN =================== */
+
+    .main {
+      padding: 32px 42px 80px;
+      max-width: 1240px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      gap: 24px;
+    }
+
+    .greet h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+    }
+
+    .greet p {
+      font-size: 16px;
+      color: var(--label-3);
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elev-1);
+      border: 1px solid var(--separator);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      width: 240px;
+      transition: all 0.2s ease;
+    }
+    .search:focus-within {
+      box-shadow: 0 0 0 4px rgba(0,122,255,0.15);
+      border-color: var(--imsg-blue);
+    }
+    .search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--label);
+    }
+    .search svg { color: var(--label-3); flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      font-weight: 600;
+      transition: all 0.15s var(--ease-out-quint);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--imsg-blue);
+      color: white;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(0,122,255,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,122,255,0.5); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-secondary {
+      background: var(--bg-elev-1);
+      color: var(--label);
+      padding: 9px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      border: 1px solid var(--separator);
+    }
+    .btn-secondary:hover { background: var(--bg-elev-2); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--label-2);
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+    }
+    .btn-ghost:hover { background: var(--bg-tint); color: var(--imsg-blue); }
+
+    /* =================== STATS =================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .stat {
+      background: var(--bg-elev-1);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s var(--ease-out-quint);
+      border: 1px solid var(--separator);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-glyph {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      display: grid; place-items: center;
+      margin-bottom: 14px;
+      color: white;
+    }
+
+    .stat-glyph.blue { background: linear-gradient(135deg, #5AC8FA, #007AFF); }
+    .stat-glyph.red { background: linear-gradient(135deg, #FF6961, #FF3B30); }
+    .stat-glyph.green { background: linear-gradient(135deg, #5BD968, #34C759); }
+    .stat-glyph.purple { background: linear-gradient(135deg, #DA8FFF, #AF52DE); }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--label-3);
+      margin-top: 7px;
+      font-weight: 500;
+    }
+
+    .stat-delta {
+      font-size: 11px;
+      color: var(--green);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* =================== SECTION HEADER =================== */
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 8px 0 16px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--label-3);
+    }
+
+    /* =================== PERSON CARD =================== */
+
+    .feed { display: grid; gap: 14px; }
+
+    .card {
+      background: var(--bg-elev-1);
+      border-radius: var(--radius-xl);
+      padding: 22px 24px;
+      border: 1px solid var(--separator);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s var(--ease-out-quint);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+      border-color: var(--separator-strong);
+    }
+
+    .card-priority-rail {
+      position: absolute;
+      left: 0; top: 22px; bottom: 22px;
+      width: 3px;
+      border-radius: 0 3px 3px 0;
+      background: var(--label-4);
+    }
+    .card.tier-1 .card-priority-rail { background: var(--red); }
+    .card.tier-2 .card-priority-rail { background: var(--orange); }
+    .card.tier-3 .card-priority-rail { background: var(--yellow); }
+    .card.tier-4 .card-priority-rail { background: var(--green); }
+    .card.tier-5 .card-priority-rail { background: var(--teal); }
+
+    .card-head {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      color: white;
+      font-weight: 600;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.30),
+        0 4px 14px rgba(0,0,0,0.10);
+    }
+    .avatar-grad-1 { background: linear-gradient(135deg, #FF9500, #FF3B30); }
+    .avatar-grad-2 { background: linear-gradient(135deg, #5AC8FA, #007AFF); }
+    .avatar-grad-3 { background: linear-gradient(135deg, #34C759, #00C7BE); }
+    .avatar-grad-4 { background: linear-gradient(135deg, #AF52DE, #FF2D55); }
+    .avatar-grad-5 { background: linear-gradient(135deg, #FFCC00, #FF9500); }
+    .avatar-grad-6 { background: linear-gradient(135deg, #007AFF, #5856D6); }
+
+    .person-info { flex: 1; min-width: 0; }
+
+    .person-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .person-name {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    .person-tier-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-tint);
+      color: var(--imsg-blue);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .person-tier-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .person-meta-line {
+      font-size: 13px;
+      color: var(--label-3);
+      margin-top: 4px;
+    }
+
+    .person-meta-line strong { color: var(--label-2); font-weight: 500; }
+
+    .due-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .due-pill.overdue { background: rgba(255,59,48,0.10); color: var(--red); }
+    .due-pill.due-soon { background: rgba(255,149,0,0.10); color: var(--orange); }
+    .due-pill.scheduled { background: rgba(52,199,89,0.10); color: var(--green); }
+
+    .priority-score {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .priority-score-num {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .priority-score-label {
+      font-size: 10px;
+      color: var(--label-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* iMessage thread preview */
+    .imsg {
+      background: var(--bg-elev-2);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px 14px;
+      margin-bottom: 14px;
+      border: 1px solid var(--separator);
+    }
+
+    .imsg-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .imsg-title {
+      font-size: 11px;
+      color: var(--label-3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 700;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .imsg-spark {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(52,199,89,0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(52,199,89,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(52,199,89,0); }
+    }
+
+    .imsg-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bubble-row {
+      display: flex;
+      max-width: 100%;
+    }
+    .bubble-row.outbound { justify-content: flex-end; }
+    .bubble-row.inbound { justify-content: flex-start; }
+
+    .bubble {
+      max-width: 78%;
+      padding: 9px 14px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.35;
+      letter-spacing: -0.005em;
+      word-wrap: break-word;
+      position: relative;
+    }
+
+    .bubble.outbound {
+      background: var(--imsg-bubble-grad);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble.outbound + .bubble.outbound { /* no special handling */ }
+
+    .bubble.inbound {
+      background: var(--bubble-gray);
+      color: var(--bubble-gray-text);
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble-meta {
+      font-size: 10px;
+      color: var(--label-3);
+      text-align: center;
+      padding: 6px 0 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 3px;
+      padding: 12px 14px;
+      background: var(--bubble-gray);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+    }
+    .typing span {
+      width: 6px; height: 6px;
+      background: var(--label-3);
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.15s; }
+    .typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    /* AI draft callout */
+    .ai-draft {
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(0,122,255,0.08), rgba(175,82,222,0.06));
+      border: 1px solid rgba(0,122,255,0.15);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+    }
+    .ai-draft-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--imsg-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .ai-draft-body {
+      color: var(--label-2);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* Card actions */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 36px; height: 36px;
+      display: grid; place-items: center;
+      border-radius: var(--radius-pill);
+      background: var(--bg-elev-2);
+      color: var(--label-2);
+      border: 1px solid var(--separator);
+      transition: all 0.15s var(--ease-out-quint);
+    }
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      color: var(--imsg-blue);
+      border-color: var(--imsg-blue);
+    }
+
+    .send-btn {
+      background: var(--imsg-blue);
+      color: white;
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,122,255,0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s var(--ease-out-quint);
+    }
+    .send-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,122,255,0.45); }
+    .send-btn:active { transform: scale(0.97); }
+    .send-btn svg { transition: transform 0.3s var(--ease-spring); }
+    .send-btn:hover svg { transform: translateX(2px) rotate(20deg); }
+
+    .actions-spacer { flex: 1; }
+
+    /* =================== INSIGHTS RAIL =================== */
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 36px 0;
+    }
+
+    .insight-card {
+      background: var(--bg-elev-1);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      border: 1px solid var(--separator);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .insight-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--label-2);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .activity-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .activity-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .activity-dot.green { background: var(--green); }
+    .activity-dot.blue { background: var(--imsg-blue); }
+    .activity-dot.orange { background: var(--orange); }
+
+    .activity-text { flex: 1; color: var(--label-2); }
+    .activity-text strong { color: var(--label); font-weight: 600; }
+    .activity-time { color: var(--label-3); font-size: 11px; }
+
+    /* =================== TIER LEGEND =================== */
+
+    .tier-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .tier-chip {
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--bg-elev-1);
+      border: 1px solid var(--separator);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .tier-chip:hover { background: var(--bg-elev-2); }
+    .tier-chip.active { background: var(--imsg-blue); color: white; border-color: var(--imsg-blue); }
+    .tier-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* =================== EMPTY / FOOTER =================== */
+
+    .footer-cta {
+      margin-top: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(0,122,255,0.08), rgba(175,82,222,0.05));
+      border: 1px solid rgba(0,122,255,0.15);
+      border-radius: var(--radius-xl);
+      text-align: center;
+    }
+
+    .footer-cta h3 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .footer-cta p {
+      font-size: 14px;
+      color: var(--label-3);
+      margin-bottom: 16px;
+    }
+
+    /* =================== MODAL =================== */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    .modal-backdrop.show { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background: var(--bg-elev-1);
+      border-radius: var(--radius-xl);
+      width: 92%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: var(--shadow-xl);
+      animation: pop 0.35s var(--ease-spring) forwards;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.92) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .modal p.sub { font-size: 14px; color: var(--label-3); margin-bottom: 20px; }
+
+    .field { margin-bottom: 14px; }
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--label-2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--separator);
+      border-radius: var(--radius-md);
+      background: var(--bg-elev-2);
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--label);
+      transition: all 0.15s ease;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--imsg-blue);
+      box-shadow: 0 0 0 4px rgba(0,122,255,0.15);
+    }
+    .field textarea { min-height: 70px; resize: vertical; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    /* =================== TOAST =================== */
+
+    .toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--label);
+      color: var(--bg);
+      padding: 12px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transition: all 0.4s var(--ease-spring);
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* =================== UTIL =================== */
+    .hidden { display: none !important; }
+
+    /* =================== PROFILE PICKER =================== */
+    .profile-picker {
+      display: inline-flex;
+      background: var(--bg-elev-2);
+      border: 1px solid var(--separator);
+      padding: 3px;
+      border-radius: var(--radius-pill);
+      gap: 2px;
+    }
+    .profile-pill {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--label-2);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.15s var(--ease-out-quint);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .profile-pill:hover { color: var(--label); }
+    .profile-pill.active {
+      background: var(--bg-elev-1);
+      color: var(--label);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .profile-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* =================== DATA SOURCES STRIP =================== */
+    .sources-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      background: var(--bg-elev-1);
+      border: 1px solid var(--separator);
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    .sources-label {
+      font-size: 11px;
+      color: var(--label-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+    .source-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--bg-elev-2);
+      border: 1px solid var(--separator);
+      color: var(--label-2);
+      transition: all 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .source-chip:hover { border-color: var(--separator-strong); transform: translateY(-1px); }
+    .source-chip.connected { background: rgba(52,199,89,0.08); color: var(--green); border-color: rgba(52,199,89,0.25); }
+    .source-chip.warning { background: rgba(255,149,0,0.08); color: var(--orange); border-color: rgba(255,149,0,0.25); }
+    .source-chip.pending { background: var(--bg-elev-2); color: var(--label-3); }
+    .source-chip .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+    }
+    .source-chip .status-dot.pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* RESPONSIVE — small screens fold sidebar */
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .insights-grid { grid-template-columns: 1fr; }
+      .main { padding: 22px 18px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- ====== SIDEBAR ====== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div>
+          <div class="brand-name">Rolodex</div>
+          <div class="brand-tag">Relationships, on autopilot</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Library</div>
+        <div class="nav-item active">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <span class="nav-label-text">Due Now</span>
+          <span class="nav-count">8</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <span class="nav-label-text">All People</span>
+          <span class="nav-count">13</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <span class="nav-label-text">Sent</span>
+          <span class="nav-count">0</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></div>
+          <span class="nav-label-text">Snoozed</span>
+          <span class="nav-count">0</span>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">Tiers</div>
+        <div class="nav-item"><div class="tier-dot" style="background: var(--red)"></div><span class="nav-label-text">Inner Circle</span><span class="nav-count">5</span></div>
+        <div class="nav-item"><div class="tier-dot" style="background: var(--orange)"></div><span class="nav-label-text">Strong Ties</span><span class="nav-count">4</span></div>
+        <div class="nav-item"><div class="tier-dot" style="background: var(--yellow)"></div><span class="nav-label-text">Warm Contacts</span><span class="nav-count">2</span></div>
+        <div class="nav-item"><div class="tier-dot" style="background: var(--green)"></div><span class="nav-label-text">Loose Ties</span><span class="nav-count">2</span></div>
+        <div class="nav-item"><div class="tier-dot" style="background: var(--teal)"></div><span class="nav-label-text">Faint Ties</span><span class="nav-count">0</span></div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-label">System</div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v6m0 10v6M1 12h6m10 0h6M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24"/></svg></div>
+          <span class="nav-label-text">Settings</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <span class="nav-label-text">Help</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====== MAIN ====== -->
+    <main class="main">
+      <div class="topbar">
+        <div class="greet">
+          <h1 id="greet-line">Good morning, Pilk.</h1>
+          <p id="greet-sub">8 people are overdue for a check-in. I've drafted everything based on your real iMessage history.</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="profile-picker" role="tablist">
+            <button class="profile-pill active" onclick="switchProfile(this, 'personal')">
+              <span class="dot" style="background:var(--imsg-blue)"></span>Personal
+            </button>
+            <button class="profile-pill" onclick="switchProfile(this, 'business')">
+              <span class="dot" style="background:var(--purple)"></span>Business
+            </button>
+          </div>
+          <div class="search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input placeholder="Search 13 people…">
+          </div>
+          <button class="btn btn-primary" onclick="openAddPerson()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add person
+          </button>
+        </div>
+      </div>
+
+      <!-- DATA SOURCES STRIP -->
+      <div class="sources-strip">
+        <span class="sources-label">Sources</span>
+        <span class="source-chip connected" title="73 threads ingested from your Mac">
+          <span class="status-dot pulse"></span>iMessage · 73 threads
+        </span>
+        <span class="source-chip connected" title="200 brain notes indexed">
+          <span class="status-dot"></span>PILK Brain · 200 notes
+        </span>
+        <span class="source-chip warning" title="Token expired — needs reconnect">
+          <span class="status-dot"></span>Gmail · needs reconnect
+        </span>
+        <span class="source-chip warning" title="Connect Calendar in Settings">
+          <span class="status-dot"></span>Calendar · needs reconnect
+        </span>
+        <span class="source-chip pending" title="Coming soon">
+          <span class="status-dot"></span>Telegram
+        </span>
+        <span class="source-chip pending" title="Upload chat export to enable">
+          <span class="status-dot"></span>WhatsApp
+        </span>
+        <span class="source-chip pending" title="Chrome extension — Phase 4">
+          <span class="status-dot"></span>Instagram
+        </span>
+        <span class="source-chip pending" title="Chrome extension — Phase 4">
+          <span class="status-dot"></span>FB Messenger
+        </span>
+        <span class="source-chip pending" title="Phase 4">
+          <span class="status-dot"></span>LinkedIn
+        </span>
+        <span style="margin-left:auto; font-size:12px; color:var(--label-3);">5 more available</span>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-glyph blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="stat-value">13</div>
+          <div class="stat-label">People in your orbit</div>
+          <div class="stat-delta">seeded from iMessage</div>
+        </div>
+        <div class="stat">
+          <div class="stat-glyph red"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="stat-value">8</div>
+          <div class="stat-label">Overdue right now</div>
+          <div class="stat-delta" style="color:var(--orange)">Tyler is 15 days out</div>
+        </div>
+        <div class="stat">
+          <div class="stat-glyph green"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Inner Circle</div>
+          <div class="stat-delta">family + ride-or-dies</div>
+        </div>
+        <div class="stat">
+          <div class="stat-glyph purple"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <div class="stat-value">1.5k+</div>
+          <div class="stat-label">Messages w/ partner</div>
+          <div class="stat-delta">most active thread</div>
+        </div>
+      </div>
+
+      <!-- TIER BAR / FILTERS -->
+      <div class="tier-bar">
+        <div class="tier-chip active">All</div>
+        <div class="tier-chip"><span class="dot" style="background:var(--red)"></span>Inner Circle</div>
+        <div class="tier-chip"><span class="dot" style="background:var(--orange)"></span>Strong Ties</div>
+        <div class="tier-chip"><span class="dot" style="background:var(--yellow)"></span>Warm</div>
+        <div class="tier-chip"><span class="dot" style="background:var(--green)"></span>Loose</div>
+        <div class="tier-chip"><span class="dot" style="background:var(--teal)"></span>Faint</div>
+      </div>
+
+      <!-- DUE NOW SECTION -->
+      <div class="section-head">
+        <div class="section-title">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(255,59,48,0.5);animation:pulse 2s infinite"></span>
+          Due Now
+        </div>
+        <span class="section-sub">5 people · real drafts ready for your approval</span>
+      </div>
+
+      <div class="feed" id="feed">
+        <!-- ============= CARD 1: Tyler (Brother) ============= -->
+        <article class="card tier-1">
+          <div class="card-priority-rail"></div>
+          <div class="card-head">
+            <div class="avatar avatar-grad-1">T</div>
+            <div class="person-info">
+              <div class="person-name-row">
+                <div class="person-name">Tyler (Brother)</div>
+                <span class="person-tier-pill" style="background:rgba(255,59,48,0.10);color:var(--red)"><span class="dot" style="background:var(--red)"></span>Inner Circle</span>
+                <span class="due-pill overdue">15 days overdue</span>
+              </div>
+              <div class="person-meta-line">
+                <strong>Younger brother</strong> · NC · 141 messages · Last talked Apr 9
+              </div>
+            </div>
+            <div class="priority-score">
+              <div class="priority-score-num">89</div>
+              <div class="priority-score-label">Priority</div>
+            </div>
+          </div>
+
+          <div class="imsg">
+            <div class="imsg-head">
+              <div class="imsg-title"><span class="imsg-spark"></span>iMessage · drafted just now</div>
+            </div>
+            <div class="bubble-meta">Apr 9 · Last talked</div>
+            <div class="imsg-body">
+              <div class="bubble-row outbound"><div class="bubble outbound">I also played the golf simulator on the Meta headset, dude it's freakishly accurate</div></div>
+              <div class="bubble-row inbound"><div class="bubble inbound">Damn thas whatsup</div></div>
+              <div class="bubble-meta" style="margin-top:10px">Today · Drafted by Rolodex</div>
+              <div class="bubble-row outbound"><div class="bubble outbound">yo bro hornets are a war crime rn lmao. wanna hop on Ark this weekend? also I finally got Jarvis stable, he's not DMing strangers anymore 😂</div></div>
+            </div>
+            <div class="ai-draft">
+              <div class="ai-draft-head">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                Why this message
+              </div>
+              <div class="ai-draft-body">
+                Pulls a callback to your last convo (Meta Quest golf) + the running PILK / Jarvis joke. Hornets reference because you both bond over the team's losses. Tone matched to your usual "yo bro" lowercase pattern.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="icon-btn" title="Edit draft"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn" title="Regenerate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+            <button class="icon-btn" title="Snooze"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></button>
+            <div class="actions-spacer"></div>
+            <button class="btn btn-secondary">View profile</button>
+            <button class="send-btn" onclick="sendDraft(this, 'Tyler')">
+              Send to Tyler
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- ============= CARD 2: Dad ============= -->
+        <article class="card tier-1">
+          <div class="card-priority-rail"></div>
+          <div class="card-head">
+            <div class="avatar avatar-grad-2">D</div>
+            <div class="person-info">
+              <div class="person-name-row">
+                <div class="person-name">Dad</div>
+                <span class="person-tier-pill" style="background:rgba(255,59,48,0.10);color:var(--red)"><span class="dot" style="background:var(--red)"></span>Inner Circle</span>
+                <span class="due-pill overdue">6 days overdue</span>
+              </div>
+              <div class="person-meta-line">
+                <strong>Father · Former coach</strong> · 94 messages · Last talked Apr 18
+              </div>
+            </div>
+            <div class="priority-score">
+              <div class="priority-score-num">90</div>
+              <div class="priority-score-label">Priority</div>
+            </div>
+          </div>
+
+          <div class="imsg">
+            <div class="imsg-head">
+              <div class="imsg-title"><span class="imsg-spark"></span>iMessage · drafted just now</div>
+            </div>
+            <div class="bubble-meta">Apr 18 · Last talked (Hornets blowout)</div>
+            <div class="imsg-body">
+              <div class="bubble-row outbound"><div class="bubble outbound">This is why I don't watch sports dude I just get too goddamn angry</div></div>
+              <div class="bubble-row inbound"><div class="bubble inbound">We definitely look like clowns</div></div>
+              <div class="bubble-meta" style="margin-top:10px">Today · Drafted by Rolodex</div>
+              <div class="bubble-row outbound"><div class="bubble outbound">Pop — saw a clip on barrel whip and rotation→linear marriage that was literally what you taught me at 12. Insane how ahead you were. How's everything? Hornets still a wreck lol</div></div>
+            </div>
+            <div class="ai-draft">
+              <div class="ai-draft-head">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                Why this message
+              </div>
+              <div class="ai-draft-body">
+                Callback to your March hitting-mechanics convo where he said "I almost felt like cheating other kids." Hornets reference because you bonded over watching them. Tone is warmer than your peer threads — full sentences, "Pop", proper punctuation.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="icon-btn" title="Edit draft"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn" title="Regenerate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+            <button class="icon-btn" title="Snooze"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></button>
+            <div class="actions-spacer"></div>
+            <button class="btn btn-secondary">View profile</button>
+            <button class="send-btn" onclick="sendDraft(this, 'Dad')">
+              Send to Dad
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- ============= CARD 3: Best Buddy ============= -->
+        <article class="card tier-1">
+          <div class="card-priority-rail"></div>
+          <div class="card-head">
+            <div class="avatar avatar-grad-3">B</div>
+            <div class="person-info">
+              <div class="person-name-row">
+                <div class="person-name">Best Buddy <span style="color:var(--label-3);font-weight:500;font-size:13px">· (727) 4133</span></div>
+                <span class="person-tier-pill" style="background:rgba(255,59,48,0.10);color:var(--red)"><span class="dot" style="background:var(--red)"></span>Inner Circle</span>
+                <span class="due-pill overdue">4 days overdue</span>
+              </div>
+              <div class="person-meta-line">
+                <strong>Closest friend in St Pete</strong> · 264 messages · Watches Mack · Last talked Apr 20
+              </div>
+            </div>
+            <div class="priority-score">
+              <div class="priority-score-num">88</div>
+              <div class="priority-score-label">Priority</div>
+            </div>
+          </div>
+
+          <div class="imsg">
+            <div class="imsg-head">
+              <div class="imsg-title"><span class="imsg-spark"></span>iMessage · drafted just now</div>
+            </div>
+            <div class="bubble-meta">Apr 20 · Last talked (AI / VR / future of jobs)</div>
+            <div class="imsg-body">
+              <div class="bubble-row outbound"><div class="bubble outbound">First started with AI then just snowballed</div></div>
+              <div class="bubble-row inbound"><div class="bubble inbound">Wyd this weekend?</div></div>
+              <div class="bubble-meta" style="margin-top:10px">Today · Drafted by Rolodex</div>
+              <div class="bubble-row outbound"><div class="bubble outbound">yo bro mack good? the system is finally stable I want you to see it. let's golf saturday or arc raiders sunday — your call. the peanut clip you sent still cracking me up</div></div>
+            </div>
+            <div class="ai-draft">
+              <div class="ai-draft-head">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                Why this message
+              </div>
+              <div class="ai-draft-body">
+                Callback to "wyd this weekend" — he asked, you didn't answer. References Mack (his dog), Arc Raiders + the Peanut clip you both laughed at. Lowercase casual tone matched to your usual.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></button>
+            <div class="actions-spacer"></div>
+            <button class="btn btn-secondary">View profile</button>
+            <button class="send-btn" onclick="sendDraft(this, 'Buddy')">
+              Send
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- ============= CARD 4: Juliet ============= -->
+        <article class="card tier-2">
+          <div class="card-priority-rail"></div>
+          <div class="card-head">
+            <div class="avatar avatar-grad-4">J</div>
+            <div class="person-info">
+              <div class="person-name-row">
+                <div class="person-name">Juliet</div>
+                <span class="person-tier-pill"><span class="dot" style="background:var(--orange)"></span>Strong Tie</span>
+                <span class="due-pill overdue">5 days overdue</span>
+              </div>
+              <div class="person-meta-line">
+                <strong>Skyway client</strong> · Sober content creator · 23k followers · AMIRO + Core Medical
+              </div>
+            </div>
+            <div class="priority-score">
+              <div class="priority-score-num">76</div>
+              <div class="priority-score-label">Priority</div>
+            </div>
+          </div>
+
+          <div class="imsg">
+            <div class="imsg-head">
+              <div class="imsg-title"><span class="imsg-spark"></span>iMessage · drafted just now</div>
+            </div>
+            <div class="bubble-meta">Apr 23 · Last (Boris Cherny Opus 4.7 tips)</div>
+            <div class="imsg-body">
+              <div class="bubble-row inbound"><div class="bubble inbound">6 Tips for Getting More Out of Opus 4.7 - From Boris Cherny</div></div>
+              <div class="bubble-meta" style="margin-top:10px">Today · Drafted by Rolodex</div>
+              <div class="bubble-row outbound"><div class="bubble outbound">Hey J — your Glow + Reta + NAD post crushed last week, that hook ripped. Got 3 new angles for the AMIRO mask I think will pop on TikTok. You free for a 15min strategy this week?</div></div>
+            </div>
+            <div class="ai-draft">
+              <div class="ai-draft-head">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                Why this message
+              </div>
+              <div class="ai-draft-body">
+                Mixed business + warmth — references her actual Glow/Reta peptide post (real callback). Tone matches your professional-but-friendly voice with managed creators. CTA is low-friction (15 min).
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></button>
+            <div class="actions-spacer"></div>
+            <button class="btn btn-secondary">View profile</button>
+            <button class="send-btn" onclick="sendDraft(this, 'Juliet')">
+              Send to Juliet
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </article>
+
+        <!-- ============= CARD 5: Insurance Friend ============= -->
+        <article class="card tier-3">
+          <div class="card-priority-rail"></div>
+          <div class="card-head">
+            <div class="avatar avatar-grad-5">IF</div>
+            <div class="person-info">
+              <div class="person-name-row">
+                <div class="person-name">Insurance Friend <span style="color:var(--label-3);font-weight:500;font-size:13px">· (617) 7900</span></div>
+                <span class="person-tier-pill" style="background:rgba(255,204,0,0.12);color:#B8860B"><span class="dot" style="background:var(--yellow)"></span>Warm Contact</span>
+                <span class="due-pill overdue">25 days overdue</span>
+              </div>
+              <div class="person-meta-line">
+                <strong>Final-expense agent</strong> · Golf buddy · 270 messages · Wants you to build his funnel
+              </div>
+            </div>
+            <div class="priority-score">
+              <div class="priority-score-num">70</div>
+              <div class="priority-score-label">Priority</div>
+            </div>
+          </div>
+
+          <div class="imsg">
+            <div class="imsg-head">
+              <div class="imsg-title"><span class="imsg-spark"></span>iMessage · drafted just now</div>
+            </div>
+            <div class="bubble-meta">Apr 13 · Last talked (after you bailed on golf)</div>
+            <div class="imsg-body">
+              <div class="bubble-row inbound"><div class="bubble inbound">Course was cool but it's just not in great shape</div></div>
+              <div class="bubble-row outbound"><div class="bubble outbound">How to avoid blowup holes</div></div>
+              <div class="bubble-meta" style="margin-top:10px">Today · Drafted by Rolodex</div>
+              <div class="bubble-row outbound"><div class="bubble outbound">yo brotha — golf finally? Buffalo Creek sunday morning if you can dip. also basically done with the GHL funnel build, want to walk you through it. think I cracked the cost-per-lead piece</div></div>
+            </div>
+            <div class="ai-draft">
+              <div class="ai-draft-head">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                Why this message
+              </div>
+              <div class="ai-draft-body">
+                You owe him a make-good — bailed on Buffalo Creek last time. Picks the conversation back up where you left off (his frustration with his current Meta-ads vendor) with a value-add (your funnel almost done).
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+            <button class="icon-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6m0 0a4 4 0 0 0-4 4v3l-2 4h12l-2-4v-3a4 4 0 0 0-4-4z"/></svg></button>
+            <div class="actions-spacer"></div>
+            <button class="btn btn-secondary">View profile</button>
+            <button class="send-btn" onclick="sendDraft(this, 'Insurance Friend')">
+              Send
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- ====== INSIGHTS ====== -->
+      <div class="insights-grid">
+        <div class="insight-card">
+          <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Recent activity
+          </h3>
+          <div class="activity-list">
+            <div class="activity-row">
+              <div class="activity-dot blue"></div>
+              <div class="activity-text">Ingested 73 iMessage threads from your brain vault</div>
+              <div class="activity-time">just now</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-dot green"></div>
+              <div class="activity-text">Identified <strong>Tyler</strong> as 15 days overdue — drafted Hornets/gaming follow-up</div>
+              <div class="activity-time">just now</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-dot orange"></div>
+              <div class="activity-text">Picked up the <strong>Insurance Friend</strong> golf-bail thread — drafted make-good</div>
+              <div class="activity-time">just now</div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-dot blue"></div>
+              <div class="activity-text">Pulled hitting-mechanics callback for <strong>Dad</strong> from Mar 4 thread</div>
+              <div class="activity-time">just now</div>
+            </div>
+          </div>
+        </div>
+        <div class="insight-card">
+          <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+            Rolodex tip
+          </h3>
+          <p style="font-size:14px;color:var(--label-2);line-height:1.5;margin-bottom:12px">
+            <strong style="color:var(--label)">Tyler is the most overdue Inner Circle person.</strong> 15 days. Brothers drift the easiest — work, life, distance — but a 2-line "wyd" reset is all it takes. Send the draft, get him on Ark this weekend.
+          </p>
+          <button class="btn btn-secondary" style="font-size:13px">See who →</button>
+        </div>
+      </div>
+
+      <div class="footer-cta">
+        <h3>Drafts ready when you are.</h3>
+        <p>Approve all 5 and Rolodex will space them across the day so it feels natural — not a blast. Always your final approval before any iMessage actually fires.</p>
+        <button class="btn btn-primary" onclick="approveAll()">Send all 5 (spaced naturally)</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- ====== ADD PERSON MODAL ====== -->
+  <div class="modal-backdrop" id="addModal" onclick="if(event.target===this)closeAddPerson()">
+    <div class="modal">
+      <h2>Add to your Rolodex</h2>
+      <p class="sub">Drop in what you remember. Rolodex will fill in the rest.</p>
+
+      <div class="field">
+        <label>Name</label>
+        <input type="text" placeholder="e.g. Mike Johnson" id="np-name">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Tier</label>
+          <select id="np-tier">
+            <option value="1">1 · Inner Circle</option>
+            <option value="2" selected>2 · Strong Tie</option>
+            <option value="3">3 · Warm Contact</option>
+            <option value="4">4 · Loose Tie</option>
+            <option value="5">5 · Faint Tie</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Relationship</label>
+          <input type="text" placeholder="e.g. high school friend" id="np-rel">
+        </div>
+      </div>
+      <div class="field">
+        <label>Phone (for iMessage)</label>
+        <input type="tel" placeholder="+1 412 555 0123" id="np-phone">
+      </div>
+      <div class="field">
+        <label>Context — anything you remember</label>
+        <textarea placeholder="How you met, what they're up to, inside jokes, anything that helps craft a real message…" id="np-ctx"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeAddPerson()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveAddPerson()">Add to Rolodex</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TOAST ====== -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-text">Sent</span>
+  </div>
+
+  <script>
+    // Time-of-day greeting
+    (function() {
+      const h = new Date().getHours();
+      const greet = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+      document.getElementById('greet-line').textContent = `${greet}, Pilk.`;
+    })();
+
+    // Toast
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // Send draft animation
+    function sendDraft(btn, name) {
+      const card = btn.closest('.card');
+      btn.innerHTML = 'Sending… <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+      setTimeout(() => {
+        card.style.transition = 'all 0.4s cubic-bezier(0.22,1,0.36,1)';
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(40px)';
+        setTimeout(() => { card.style.display = 'none'; showToast(`Sent to ${name} ✓`); }, 400);
+      }, 600);
+    }
+
+    function approveAll() {
+      showToast('Sending 7 messages, spaced over the next 4 hours');
+      const cards = document.querySelectorAll('.feed .card');
+      cards.forEach((c, i) => {
+        setTimeout(() => {
+          c.style.transition = 'all 0.4s cubic-bezier(0.22,1,0.36,1)';
+          c.style.opacity = '0';
+          c.style.transform = 'translateX(40px)';
+        }, i * 220);
+      });
+    }
+
+    // Modal
+    function openAddPerson() { document.getElementById('addModal').classList.add('show'); }
+    function closeAddPerson() { document.getElementById('addModal').classList.remove('show'); }
+    function saveAddPerson() {
+      const n = document.getElementById('np-name').value.trim();
+      if (!n) return;
+      closeAddPerson();
+      showToast(`${n} added · drafting first message…`);
+    }
+
+    // Tier filter chips
+    document.querySelectorAll('.tier-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.tier-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // Sidebar nav
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+
+    // Profile picker (Personal / Business)
+    function switchProfile(btn, profile) {
+      document.querySelectorAll('.profile-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      showToast(`Switched to ${profile === 'personal' ? 'Personal' : 'Business'} profile`);
+    }
+
+    // Source chip click → toast hint
+    document.querySelectorAll('.source-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const text = chip.textContent.trim();
+        if (chip.classList.contains('warning')) showToast(`${text.split(' ·')[0]} — open Settings to reconnect`);
+        else if (chip.classList.contains('pending')) showToast(`${text.split(' ·')[0]} — coming in next phase`);
+        else showToast(`${text.split(' ·')[0]} is live`);
+      });
+    });
+
+    // ESC closes modal
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeAddPerson();
+    });
+  </script>
+</body>
+</html>

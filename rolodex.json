@@ -1,0 +1,481 @@
+{
+  "version": "2.0",
+  "schema_changelog": "v2.0 — Added channels[], tone_profile, group_threads[], life_events[], profiles (personal/business), natural_end signals, source_attribution.",
+  "owner": {
+    "name": "Aaron Pilkington",
+    "nickname": "Pilk",
+    "personal_email": "pilkingtonent@gmail.com",
+    "business_email": "aaron@skyway.media",
+    "city": "St. Petersburg, FL",
+    "timezone": "America/New_York",
+    "active_projects": [
+      "Skyway Media (digital marketing agency, ~300 clients)",
+      "Not Vaccinated™ brand",
+      "MORS (chrome rocks / BTC treasure hunt)",
+      "PILK AI infrastructure",
+      "Brandgen (autonomous marketing OS)",
+      "Wholesale company (real estate adjacent)",
+      "Peptide app"
+    ]
+  },
+  "profiles": {
+    "personal": {
+      "name": "Personal",
+      "default_phone": "+1XXXXXXXXXX",
+      "default_email": "pilkingtonent@gmail.com",
+      "active_devices": ["personal_macbook", "personal_iphone"],
+      "tier_cadence_days": { "1": 14, "2": 45, "3": 90, "4": 180, "5": 365 },
+      "send_window_local_hours": { "earliest": 9, "latest": 21 },
+      "voice_default": "lowercase_casual"
+    },
+    "business": {
+      "name": "Business — Skyway / NV",
+      "default_email": "aaron@skyway.media",
+      "active_devices": ["business_macbook"],
+      "tier_cadence_days": { "1": 7, "2": 21, "3": 60, "4": 120, "5": 240 },
+      "send_window_local_hours": { "earliest": 9, "latest": 18 },
+      "voice_default": "professional_warm"
+    }
+  },
+  "settings": {
+    "approval_required": true,
+    "never_auto_send": true,
+    "data_source_priority": ["imessage", "gmail", "calendar", "telegram", "whatsapp_export", "instagram_extension", "facebook_export"],
+    "scoring_weights": {
+      "warmth": 0.30,
+      "responsiveness": 0.15,
+      "freshness_decay": 0.25,
+      "user_priority_boost": 0.15,
+      "life_event_proximity": 0.15
+    },
+    "natural_end_threshold": 0.7,
+    "respect_no_reply_decisions": true,
+    "honor_standing_instructions": [
+      "mem_e676305c5337 — never iMessage anyone without explicit per-message permission",
+      "mem_e3ff003aaeeb — never autonomously contact Skyway agency clients",
+      "mem_9245f7b10c8a — protect operator privacy at all costs"
+    ]
+  },
+  "data_sources": {
+    "connected": [
+      { "id": "imessage_macos", "label": "iMessage (macOS)", "status": "connected", "last_sync": "2026-04-23T23:30:49Z", "thread_count": 73, "message_count_indexed": "~3500" },
+      { "id": "pilk_brain_vault", "label": "PILK brain (notes + memory)", "status": "connected", "note_count": 200 },
+      { "id": "gmail_personal", "label": "Gmail — pilkingtonent@gmail.com", "status": "connected_via_pilk_mcp" },
+      { "id": "gmail_business", "label": "Gmail — sentientpilkai@gmail.com", "status": "connected_via_pilk_mcp" },
+      { "id": "google_calendar", "label": "Calendar", "status": "connected_via_pilk_mcp" }
+    ],
+    "available_to_connect": [
+      { "id": "telegram", "label": "Telegram", "method": "MTProto user auth" },
+      { "id": "whatsapp", "label": "WhatsApp", "method": "Chat export upload" },
+      { "id": "instagram", "label": "Instagram DMs + comments", "method": "Chrome extension (in-browser capture)" },
+      { "id": "facebook_messenger", "label": "Facebook Messenger", "method": "FB data export OR Chrome extension" },
+      { "id": "ms365", "label": "Microsoft 365 / Outlook", "method": "MS Graph OAuth" },
+      { "id": "linkedin", "label": "LinkedIn (profile activity)", "method": "Chrome extension" },
+      { "id": "discord", "label": "Discord", "method": "User token" },
+      { "id": "phone_calls", "label": "Phone call history", "method": "macOS CallHistory.db (Full Disk Access)" }
+    ],
+    "circle_clusters_detected": []
+  },
+  "person_template": {
+    "id": "p_<phone_or_email>",
+    "primary_handle": "+1XXXXXXXXXX",
+    "display_name": "First Last",
+    "first_name": "First",
+    "nicknames": ["nick", "bro"],
+    "tier": 1,
+    "profile_membership": ["personal"],
+    "relationship_class": "family|partner|friend|business_partner|client|mentor|mentee|acquaintance",
+    "relationship_subclass": "brother|mom|dad|college_roommate|hs_friend|former_colleague|coach",
+    "tags": [],
+    "channels": [
+      {
+        "type": "imessage",
+        "handle": "+1XXXXXXXXXX",
+        "thread_id": 65,
+        "message_count": 264,
+        "last_message_at": "2026-04-20T14:08:00Z",
+        "last_message_direction": "inbound|outbound",
+        "natural_end_score": 0.0,
+        "active": true
+      },
+      {
+        "type": "gmail",
+        "handle": "person@email.com",
+        "thread_count": 4,
+        "last_message_at": "2026-04-15T09:30:00Z",
+        "active": true
+      }
+    ],
+    "tone_profile": {
+      "capitalization_rate": 0.05,
+      "punctuation_rate": 0.10,
+      "emoji_per_100w": 0.5,
+      "profanity_per_100w": 4,
+      "avg_msg_words": 6,
+      "preferred_voice_label": "lowercase_casual_bro",
+      "shibboleth_phrases": ["yo bro", "lmao", "g", "sheeesh"],
+      "sign_off_pattern": "none — just stops",
+      "topic_graph": ["VR", "golf", "AI", "sports betting", "Mack the dog"],
+      "callbacks": ["Mack", "Peanut clip", "Jarvis going rogue"],
+      "samples": [
+        "Yeahhhh your gonna need a rain check",
+        "Bruh what is happeni",
+        "It's pretty realistic. A lot of free will"
+      ]
+    },
+    "group_threads": [
+      { "thread_id": 12, "name": "family chat", "members_count": 5, "user_engagement_rate": 0.3 }
+    ],
+    "context": {
+      "current_situation": "Living in NC, plays Ark Raiders + COD, into AI",
+      "shared_history": "...",
+      "talking_points": [],
+      "do_not_mention": []
+    },
+    "history": {
+      "first_known_contact": "2010-06-01",
+      "last_contacted": "2026-04-20",
+      "last_contact_method": "imessage",
+      "last_contact_summary": "...",
+      "log": []
+    },
+    "scoring": {
+      "warmth": 0.92,
+      "responsiveness": 0.85,
+      "user_priority_boost": 80,
+      "freshness_decay": 0.2,
+      "life_event_proximity": 0.0,
+      "_computed_priority": 88
+    },
+    "cadence": {
+      "target_days": 14,
+      "next_due": "2026-05-04",
+      "is_overdue": true,
+      "days_overdue": 4,
+      "snooze_until": null
+    },
+    "life_events": [
+      { "type": "birthday", "date": "1996-08-14", "source": "manual" },
+      { "type": "job_change", "summary": "...", "source": "linkedin_extension|gmail|manual" },
+      { "type": "travel", "from": "2026-04-04", "to": "2026-04-12", "summary": "RV trip CA → AZ" }
+    ],
+    "do_not_contact": false,
+    "sensitivity_flags": [],
+    "notes": []
+  },
+  "people": [
+    {
+      "id": "p_17173178835",
+      "primary_handle": "+17173178835",
+      "display_name": "Partner",
+      "tier": 1,
+      "profile_membership": ["personal"],
+      "relationship_class": "partner",
+      "tags": ["partner", "daily", "inner-circle"],
+      "channels": [
+        { "type": "imessage", "handle": "+17173178835", "message_count": 1500, "last_message_at": "2026-04-23T23:18:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "lowercase_intimate",
+        "emoji_per_100w": 4,
+        "shibboleth_phrases": ["hahaha", "okayyy", "ily"]
+      },
+      "context": {
+        "current_situation": "Cross-country RV trip (CA → AZ → ongoing)",
+        "talking_points": ["the trip", "solidcore workouts", "the in-n-out vs five guys debate"],
+        "do_not_mention": ["past arguments"]
+      },
+      "history": { "last_contacted": "2026-04-23", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.95, "responsiveness": 0.95, "user_priority_boost": 100, "_computed_priority": 98 },
+      "cadence": { "target_days": 1, "next_due": "2026-05-08", "is_overdue": false, "days_overdue": 0 },
+      "sensitivity_flags": ["intimate_partner_data"]
+    },
+    {
+      "id": "p_17046613414",
+      "primary_handle": "+17046613414",
+      "display_name": "Mom",
+      "first_name": "Mom",
+      "tier": 1,
+      "profile_membership": ["personal"],
+      "relationship_class": "family",
+      "relationship_subclass": "mother",
+      "tags": ["family", "inner-circle"],
+      "channels": [
+        { "type": "imessage", "handle": "+17046613414", "message_count": 224, "last_message_at": "2026-04-21T21:17:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "warm_proper_full_sentences",
+        "capitalization_rate": 0.95,
+        "punctuation_rate": 0.85,
+        "emoji_per_100w": 1.2,
+        "profanity_per_100w": 0,
+        "shibboleth_phrases": ["love you", "Pop", "lol"],
+        "sign_off_pattern": "love you / 'k'",
+        "topic_graph": ["court case", "Tyler's birthday", "Richard's joint ventures", "Tressa", "Lindsey/Sadie"]
+      },
+      "context": {
+        "current_situation": "Lives with Richard. Tressa girls-trip plans. Manages family finances.",
+        "talking_points": ["Richard's joint ventures", "Tyler", "PILK AI demo"]
+      },
+      "history": { "last_contacted": "2026-04-21", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 1.0, "responsiveness": 0.90, "user_priority_boost": 100, "_computed_priority": 96 },
+      "cadence": { "target_days": 7, "next_due": "2026-05-08", "is_overdue": false, "days_overdue": 0 }
+    },
+    {
+      "id": "p_17045628040",
+      "primary_handle": "+17045628040",
+      "display_name": "Dad",
+      "first_name": "Dad",
+      "tier": 1,
+      "profile_membership": ["personal"],
+      "relationship_class": "family",
+      "relationship_subclass": "father",
+      "tags": ["family", "inner-circle", "baseball-coach"],
+      "channels": [
+        { "type": "imessage", "handle": "+17045628040", "message_count": 94, "last_message_at": "2026-04-18T01:37:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "warm_baseball_dad",
+        "capitalization_rate": 0.30,
+        "shibboleth_phrases": ["yep", "true", "thumb"],
+        "topic_graph": ["Hornets", "Panthers", "swing mechanics", "Tyler", "Mack"]
+      },
+      "context": {
+        "shared_history": "Coached your hitting/pitching. You geek out together over Tread Athletics theory + how he was decades ahead.",
+        "talking_points": ["Hornets games", "swing mechanics", "the thumb meme"]
+      },
+      "history": { "last_contacted": "2026-04-18", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.95, "responsiveness": 0.85, "user_priority_boost": 90, "_computed_priority": 90 },
+      "cadence": { "target_days": 14, "next_due": "2026-05-02", "is_overdue": true, "days_overdue": 6 }
+    },
+    {
+      "id": "p_17049427133",
+      "primary_handle": "+17049427133",
+      "display_name": "Best Buddy",
+      "tier": 1,
+      "profile_membership": ["personal"],
+      "relationship_class": "friend",
+      "relationship_subclass": "best_friend",
+      "tags": ["best-friend", "golf", "gaming"],
+      "channels": [
+        { "type": "imessage", "handle": "+17049427133", "message_count": 264, "last_message_at": "2026-04-20T14:08:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "lowercase_casual_bro",
+        "capitalization_rate": 0.05,
+        "punctuation_rate": 0.10,
+        "shibboleth_phrases": ["yo bro", "lmao", "g", "sheeesh", "my b", "word"],
+        "topic_graph": ["Mack", "Arc Raiders", "VR Quest 3", "golf", "Sadie/Lindsey"],
+        "callbacks": ["Mack the dog", "Peanut clip", "Jarvis going rogue"]
+      },
+      "context": {
+        "current_situation": "St Pete. Construction-adjacent role. Plays Arc Raiders.",
+        "talking_points": ["Mack", "Arc Raiders + Peanut", "VR Quest 3", "golf"]
+      },
+      "history": { "last_contacted": "2026-04-20", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.92, "responsiveness": 0.85, "user_priority_boost": 80, "_computed_priority": 88 },
+      "cadence": { "target_days": 14, "next_due": "2026-05-04", "is_overdue": true, "days_overdue": 4 }
+    },
+    {
+      "id": "p_19803287273",
+      "primary_handle": "+19803287273",
+      "display_name": "Tyler",
+      "first_name": "Tyler",
+      "tier": 1,
+      "profile_membership": ["personal"],
+      "relationship_class": "family",
+      "relationship_subclass": "brother",
+      "tags": ["family", "inner-circle", "gaming", "sports-betting"],
+      "channels": [
+        { "type": "imessage", "handle": "+19803287273", "message_count": 141, "last_message_at": "2026-04-09T02:12:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "lowercase_brothers",
+        "shibboleth_phrases": ["bet", "ha", "thas whatsup", "naa"],
+        "topic_graph": ["Hornets", "Panthers", "shared playlist", "betting", "video games"]
+      },
+      "context": {
+        "current_situation": "NC. Heavy gamer + sports better.",
+        "talking_points": ["Hornets/Panthers", "shared Spotify playlist", "betting strategy"]
+      },
+      "history": { "last_contacted": "2026-04-09", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.93, "responsiveness": 0.80, "user_priority_boost": 90, "_computed_priority": 89 },
+      "cadence": { "target_days": 14, "next_due": "2026-04-23", "is_overdue": true, "days_overdue": 15 }
+    },
+    {
+      "id": "p_17276083753",
+      "primary_handle": "+17276083753",
+      "display_name": "Cam",
+      "first_name": "Cam",
+      "tier": 2,
+      "profile_membership": ["business", "personal"],
+      "relationship_class": "business_partner",
+      "relationship_subclass": "co_operator",
+      "tags": ["skyway", "not-vaccinated", "daily-ops"],
+      "channels": [
+        { "type": "imessage", "handle": "+17276083753", "message_count": 214, "last_message_at": "2026-04-22T13:20:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "rapid_fire_ops_chat",
+        "shibboleth_phrases": ["hahaha", "yea", "I mean"],
+        "topic_graph": ["Skyway clients", "Juliet", "NV", "Calming Co", "Brandgen"]
+      },
+      "history": { "last_contacted": "2026-04-22", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.85, "responsiveness": 0.88, "user_priority_boost": 70, "_computed_priority": 85 },
+      "cadence": { "target_days": 7, "next_due": "2026-05-08", "is_overdue": false, "days_overdue": 0 }
+    },
+    {
+      "id": "p_16037608134",
+      "primary_handle": "+16037608134",
+      "display_name": "Buddy (St. Pete)",
+      "tier": 2,
+      "profile_membership": ["personal"],
+      "relationship_class": "friend",
+      "tags": ["close-friend", "pickleball", "agency-adjacent"],
+      "channels": [
+        { "type": "imessage", "handle": "+16037608134", "message_count": 1447, "last_message_at": "2026-04-23T20:00:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "lowercase_casual_bro",
+        "shibboleth_phrases": ["lol", "word", "bet"],
+        "topic_graph": ["pickleball", "Brooke's crew", "Sprout Social", "RSO"]
+      },
+      "history": { "last_contacted": "2026-04-23", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.88, "responsiveness": 0.85, "user_priority_boost": 70, "_computed_priority": 86 },
+      "cadence": { "target_days": 7, "next_due": "2026-04-30", "is_overdue": true, "days_overdue": 8 }
+    },
+    {
+      "id": "p_17274866004",
+      "primary_handle": "+17274866004",
+      "display_name": "Bryce",
+      "first_name": "Bryce",
+      "tier": 2,
+      "profile_membership": ["business"],
+      "relationship_class": "business_partner",
+      "relationship_subclass": "talent_management",
+      "tags": ["business", "talent", "influencers"],
+      "channels": [
+        { "type": "imessage", "handle": "+17274866004", "message_count": 596, "last_message_at": "2026-04-21T22:55:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "biz_casual_with_hustle",
+        "topic_graph": ["new creators", "Adi (Dubai)", "fit checks"]
+      },
+      "history": { "last_contacted": "2026-04-21", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.78, "responsiveness": 0.80, "user_priority_boost": 50, "_computed_priority": 78 },
+      "cadence": { "target_days": 14, "next_due": "2026-05-05", "is_overdue": true, "days_overdue": 3 }
+    },
+    {
+      "id": "p_17276449302",
+      "primary_handle": "+17276449302",
+      "display_name": "Juliet",
+      "first_name": "Juliet",
+      "tier": 2,
+      "profile_membership": ["business"],
+      "relationship_class": "client",
+      "relationship_subclass": "managed_creator",
+      "tags": ["client", "creator", "skyway", "sobriety", "peptides"],
+      "channels": [
+        { "type": "imessage", "handle": "+17276449302", "message_count": 100, "last_message_at": "2026-04-23T15:43:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "biz_warm_creator_collab",
+        "topic_graph": ["AMIRO", "peptides Core Medical", "sobriety content", "podcast pitches"]
+      },
+      "history": { "last_contacted": "2026-04-23", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.75, "responsiveness": 0.70, "user_priority_boost": 60, "_computed_priority": 76 },
+      "cadence": { "target_days": 10, "next_due": "2026-05-03", "is_overdue": true, "days_overdue": 5 }
+    },
+    {
+      "id": "p_18139922901",
+      "primary_handle": "+18139922901",
+      "display_name": "Dustin",
+      "first_name": "Dustin",
+      "tier": 3,
+      "profile_membership": ["personal"],
+      "relationship_class": "friend",
+      "tags": ["close-friend", "downtown-stp"],
+      "channels": [
+        { "type": "imessage", "handle": "+18139922901", "message_count": 105, "last_message_at": "2026-04-22T01:38:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "biz_casual_father_friend",
+        "shibboleth_phrases": ["my man", "yo", "loved an image"]
+      },
+      "history": { "last_contacted": "2026-04-22", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.72, "responsiveness": 0.78, "user_priority_boost": 40, "_computed_priority": 72 },
+      "cadence": { "target_days": 21, "next_due": "2026-05-13", "is_overdue": false, "days_overdue": 0 }
+    },
+    {
+      "id": "p_16175107900",
+      "primary_handle": "+16175107900",
+      "display_name": "Insurance Friend",
+      "tier": 3,
+      "profile_membership": ["personal", "business"],
+      "relationship_class": "friend",
+      "relationship_subclass": "golf_buddy_with_biz",
+      "tags": ["golf", "insurance", "lead-gen"],
+      "channels": [
+        { "type": "imessage", "handle": "+16175107900", "message_count": 270, "last_message_at": "2026-04-13T19:25:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "casual_business_bro",
+        "topic_graph": ["funnel build", "leads", "Buffalo Creek course", "Family First Life"]
+      },
+      "history": { "last_contacted": "2026-04-13", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.70, "responsiveness": 0.72, "user_priority_boost": 50, "_computed_priority": 70 },
+      "cadence": { "target_days": 21, "next_due": "2026-05-04", "is_overdue": true, "days_overdue": 4 }
+    },
+    {
+      "id": "p_17276570781",
+      "primary_handle": "+17276570781",
+      "display_name": "Payton",
+      "first_name": "Payton",
+      "tier": 4,
+      "profile_membership": ["personal"],
+      "relationship_class": "mentee",
+      "tags": ["real-estate", "teacher"],
+      "channels": [
+        { "type": "imessage", "handle": "+17276570781", "message_count": 110, "last_message_at": "2026-03-23T12:30:00Z", "active": true }
+      ],
+      "tone_profile": { "preferred_voice_label": "advice_giver_warm" },
+      "history": { "last_contacted": "2026-03-23", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.55, "responsiveness": 0.65, "user_priority_boost": 30, "_computed_priority": 58 },
+      "cadence": { "target_days": 30, "next_due": "2026-04-22", "is_overdue": true, "days_overdue": 16 }
+    },
+    {
+      "id": "p_17604022763",
+      "primary_handle": "+17604022763",
+      "display_name": "Maleah",
+      "first_name": "Maleah",
+      "tier": 4,
+      "profile_membership": ["personal"],
+      "relationship_class": "mentee",
+      "tags": ["photographer", "faith"],
+      "channels": [
+        { "type": "imessage", "handle": "+17604022763", "message_count": 123, "last_message_at": "2026-04-20T16:41:00Z", "active": true }
+      ],
+      "tone_profile": {
+        "preferred_voice_label": "warm_encouraging_faith_aware",
+        "topic_graph": ["photography gear", "California move", "faith / Proverbs"]
+      },
+      "history": { "last_contacted": "2026-04-20", "last_contact_method": "imessage" },
+      "scoring": { "warmth": 0.60, "responsiveness": 0.70, "user_priority_boost": 30, "_computed_priority": 60 },
+      "cadence": { "target_days": 30, "next_due": "2026-05-20", "is_overdue": false, "days_overdue": 0 }
+    }
+  ],
+  "_meta": {
+    "schema_version": "2.0",
+    "ingestion_source": "ingested/messages/ in PILK brain vault (73 threads)",
+    "person_count": 13,
+    "tier_distribution": { "1": 5, "2": 4, "3": 2, "4": 2, "5": 0 },
+    "profile_distribution": { "personal_only": 9, "business_only": 2, "both": 2 },
+    "next_data_pulls_planned": [
+      "Gmail enrichment (already accessible via PILK MCP)",
+      "Calendar life-event detection (today)",
+      "Telegram (when MTProto auth wired)",
+      "WhatsApp (manual export)",
+      "IG / FB (Chrome extension build)"
+    ]
+  }
+}
