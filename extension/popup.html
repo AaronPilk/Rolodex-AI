@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Rolodex Capture</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="hd">
+    <div class="hd-mark">R</div>
+    <div class="hd-title">
+      <div class="hd-name">Rolodex Capture</div>
+      <div class="hd-status" id="hd-status">checking…</div>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-num" id="stat-total">—</div>
+      <div class="stat-label">Captured</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="stat-conversations">—</div>
+      <div class="stat-label">Conversations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="stat-platforms">—</div>
+      <div class="stat-label">Sources</div>
+    </div>
+  </section>
+
+  <section class="recent">
+    <div class="section-title">Recent</div>
+    <div class="recent-list" id="recent-list">
+      <div class="empty">No captures yet. Open Instagram or Messenger to start.</div>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button class="btn btn-primary" id="btn-export">
+      Export to JSON
+    </button>
+    <button class="btn btn-secondary" id="btn-clear">
+      Clear all
+    </button>
+  </section>
+
+  <footer class="ft">
+    <div id="ft-last">No captures yet</div>
+    <div class="ft-hint">Browse normally — captures happen passively</div>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

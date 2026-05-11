@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms of Service — PILK</title>
+<meta name="description" content="PILK Terms of Service." />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="128x128" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<style>
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(ellipse at top, #1a1530 0%, #0a0814 60%, #050309 100%);
+    color: #e7e4f5;
+    min-height: 100vh;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #b39df0; }
+  a:hover { color: #d4c2ff; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 24px 80px; }
+  nav { margin-bottom: 48px; }
+  nav .logo-link { display: inline-flex; align-items: center; text-decoration: none; }
+  nav .logo-img { height: 48px; width: auto; display: block; }
+  h1 { font-size: 40px; margin: 0 0 8px; color: #fff; letter-spacing: -0.5px; }
+  .meta { color: #8b85a8; font-size: 14px; margin-bottom: 48px; }
+  h2 { color: #fff; margin: 40px 0 12px; font-size: 22px; letter-spacing: -0.2px; }
+  h3 { color: #fff; margin: 24px 0 8px; font-size: 17px; }
+  p, li { color: #c8c4dc; }
+  ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .callout {
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  footer { color: #6b6589; font-size: 14px; margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.05); }
+  footer a { margin-right: 16px; color: #9b94b8; }
+
+  /* ----- animated connection background ----- */
+  .bg-orbs {
+    position: fixed; inset: 0; z-index: -2;
+    pointer-events: none; overflow: hidden;
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(70px); opacity: 0.32;
+    will-change: transform;
+  }
+  .orb-1 { width: 420px; height: 420px;
+    background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+    top: -12%; left: -8%;
+    animation: drift1 26s ease-in-out infinite alternate; }
+  .orb-2 { width: 520px; height: 520px;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    top: 28%; right: -18%;
+    animation: drift2 32s ease-in-out infinite alternate; }
+  .orb-3 { width: 360px; height: 360px;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    bottom: -12%; left: 28%;
+    animation: drift3 30s ease-in-out infinite alternate; }
+  .orb-4 { width: 280px; height: 280px;
+    background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+    top: 55%; left: 18%;
+    animation: drift4 22s ease-in-out infinite alternate; }
+  @keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(120px, 90px) scale(1.12); } }
+  @keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-140px, 70px) scale(0.88); } }
+  @keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(90px, -110px) scale(1.18); } }
+  @keyframes drift4 { from { transform: translate(0,0) scale(1); } to { transform: translate(-70px, 90px) scale(0.92); } }
+
+  .bg-network {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; opacity: 0.55;
+  }
+  .bg-network .links line {
+    stroke: rgba(179, 157, 240, 0.35);
+    stroke-width: 0.6;
+    stroke-dasharray: 3 6;
+    animation: shimmer 10s linear infinite;
+  }
+  .bg-network .nodes circle {
+    fill: #b39df0;
+    filter: drop-shadow(0 0 6px #8b5cf6);
+    animation: pulse 4.5s ease-in-out infinite;
+  }
+  .bg-network .nodes circle:nth-child(4n)   { animation-delay: -0.8s; }
+  .bg-network .nodes circle:nth-child(4n+1) { animation-delay: -1.6s; }
+  .bg-network .nodes circle:nth-child(4n+2) { animation-delay: -2.4s; }
+  .bg-network .nodes circle:nth-child(4n+3) { animation-delay: -3.2s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.45; transform: scale(1); transform-origin: center; }
+    50%      { opacity: 1;    transform: scale(1.55); }
+  }
+  @keyframes shimmer { to { stroke-dashoffset: -36; } }
+
+  .wrap { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .orb, .bg-network .nodes circle, .bg-network .links line { animation: none !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<svg class="bg-network" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g class="links">
+    <line x1="120" y1="140" x2="340" y2="90"/>
+    <line x1="340" y1="90"  x2="580" y2="200"/>
+    <line x1="580" y1="200" x2="820" y2="130"/>
+    <line x1="820" y1="130" x2="1080" y2="240"/>
+    <line x1="120" y1="140" x2="220" y2="340"/>
+    <line x1="220" y1="340" x2="480" y2="290"/>
+    <line x1="480" y1="290" x2="580" y2="200"/>
+    <line x1="480" y1="290" x2="720" y2="420"/>
+    <line x1="720" y1="420" x2="980" y2="370"/>
+    <line x1="980" y1="370" x2="1080" y2="240"/>
+    <line x1="220" y1="340" x2="180" y2="580"/>
+    <line x1="180" y1="580" x2="400" y2="640"/>
+    <line x1="400" y1="640" x2="640" y2="700"/>
+    <line x1="640" y1="700" x2="880" y2="620"/>
+    <line x1="880" y1="620" x2="1100" y2="560"/>
+    <line x1="1100" y1="560" x2="980" y2="370"/>
+    <line x1="400" y1="640" x2="480" y2="290"/>
+    <line x1="640" y1="700" x2="720" y2="420"/>
+    <line x1="880" y1="620" x2="720" y2="420"/>
+  </g>
+  <g class="nodes">
+    <circle cx="120"  cy="140" r="2.5"/>
+    <circle cx="340"  cy="90"  r="3"/>
+    <circle cx="580"  cy="200" r="3.5"/>
+    <circle cx="820"  cy="130" r="2.5"/>
+    <circle cx="1080" cy="240" r="3"/>
+    <circle cx="220"  cy="340" r="3"/>
+    <circle cx="480"  cy="290" r="4"/>
+    <circle cx="720"  cy="420" r="3.5"/>
+    <circle cx="980"  cy="370" r="3"/>
+    <circle cx="180"  cy="580" r="2.5"/>
+    <circle cx="400"  cy="640" r="3.5"/>
+    <circle cx="640"  cy="700" r="3"/>
+    <circle cx="880"  cy="620" r="3"/>
+    <circle cx="1100" cy="560" r="2.5"/>
+  </g>
+</svg>
+
+<div class="wrap">
+
+  <nav><a href="/" class="logo-link" aria-label="PILK AI home"><img src="/logo.png" alt="PILK AI" class="logo-img" /></a></nav>
+
+  <h1>Terms of Service</h1>
+  <p class="meta">Last updated: May 11, 2026</p>
+
+  <div class="callout">
+    <p><strong>Plain English:</strong> PILK is a tool that helps you stay in touch with people. You're responsible for what you send. Don't use PILK to spam, deceive, or harass anyone. We provide PILK "as is" and reserve the right to update these terms.</p>
+  </div>
+
+  <h2>1. Acceptance of these terms</h2>
+  <p>By installing, accessing, or using PILK ("the Service"), you agree to these Terms of Service. If you don't agree, don't use PILK.</p>
+
+  <h2>2. Description of the Service</h2>
+  <p>PILK is an AI-powered personal relationship assistant. It reads messages from channels you connect (such as iMessage, Instagram, Facebook Messenger, Telegram, WhatsApp, Email, and X), identifies people you may want to reach out to, and generates draft messages in your writing voice. PILK runs locally on your computer and only sends messages with your explicit approval.</p>
+
+  <h2>3. Your account and credentials</h2>
+  <p>To use PILK, you provide credentials for each channel you connect. You are responsible for:</p>
+  <ul>
+    <li>Maintaining the confidentiality of those credentials.</li>
+    <li>All activity on each connected account.</li>
+    <li>Ensuring you have the right to access and send messages from each connected account.</li>
+  </ul>
+
+  <h2>4. Acceptable use</h2>
+  <p>You agree not to use PILK to:</p>
+  <ul>
+    <li>Send spam, unsolicited bulk messages, or commercial solicitations to people who haven't consented.</li>
+    <li>Impersonate any person or entity, including misrepresenting that AI-generated content is human-written when context requires disclosure.</li>
+    <li>Harass, threaten, defame, or harm any individual.</li>
+    <li>Send content that is illegal, deceptive, or violates the rules of the platform you're sending through (e.g., Meta's messaging policies, X's API rules, etc.).</li>
+    <li>Reverse engineer, scrape, or attempt to disable PILK's security mechanisms.</li>
+    <li>Use PILK to violate any law in your jurisdiction or any third party's rights.</li>
+  </ul>
+  <p>You remain solely responsible for every message you send through PILK. PILK drafts; you decide.</p>
+
+  <h2>5. Third-party platforms</h2>
+  <p>PILK connects to third-party platforms (Meta, Telegram, Twilio, Anthropic, etc.) via their public APIs. Your use of those platforms through PILK is also subject to their own terms of service. PILK is not responsible for changes those platforms make to their APIs, policies, or message rate limits.</p>
+
+  <h2>6. AI-generated content</h2>
+  <p>PILK uses large language models (currently Anthropic's Claude) to draft message content. AI-generated content may sometimes be inaccurate, awkward, or inappropriate for the context. <strong>You are responsible for reviewing every draft before sending.</strong> PILK is not liable for messages you choose to send.</p>
+
+  <h2>7. Intellectual property</h2>
+  <p>PILK's software, design, and documentation are the property of Aaron Pilkington. You receive a non-exclusive, non-transferable license to use PILK on your own devices for personal use. You may not redistribute, resell, or sublicense PILK without written permission.</p>
+
+  <h2>8. Privacy</h2>
+  <p>Our handling of your data is described in the <a href="/privacy.html">Privacy Policy</a>, which is incorporated by reference into these Terms.</p>
+
+  <h2>9. Disclaimer of warranties</h2>
+  <p>PILK IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. We do not warrant that PILK will be uninterrupted, error-free, or that defects will be corrected. You use PILK at your own risk.</p>
+
+  <h2>10. Limitation of liability</h2>
+  <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, AARON PILKINGTON AND THE PILK PROJECT SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES — INCLUDING LOST PROFITS, LOST DATA, OR DAMAGE TO RELATIONSHIPS — ARISING FROM YOUR USE OF PILK. OUR TOTAL LIABILITY TO YOU FOR ANY CLAIM SHALL NOT EXCEED THE GREATER OF $100 OR THE AMOUNT YOU PAID PILK IN THE PRECEDING 12 MONTHS.</p>
+
+  <h2>11. Termination</h2>
+  <p>You may stop using PILK at any time by uninstalling it. We may suspend or terminate your access if you breach these Terms. On termination, you must stop using PILK and may delete all local data (see <a href="/data-deletion.html">Data Deletion</a>).</p>
+
+  <h2>12. Changes to these terms</h2>
+  <p>We may update these Terms from time to time. If we make material changes we will post a notice on this page and update the "Last updated" date. Continued use of PILK after changes constitutes acceptance.</p>
+
+  <h2>13. Governing law</h2>
+  <p>These Terms are governed by the laws of the State of Florida, USA, without regard to its conflict of laws provisions. Any dispute arising out of these Terms will be resolved in the state or federal courts located in Pinellas County, Florida.</p>
+
+  <h2>14. Contact</h2>
+  <p>Questions about these Terms? Email <a href="mailto:aaron@pilk.ai">aaron@pilk.ai</a>.</p>
+
+  <footer>
+    <a href="/">Home</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/data-deletion.html">Data deletion</a>
+  </footer>
+
+</div>
+</body>
+</html>

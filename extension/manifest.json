@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "Rolodex Capture",
+  "short_name": "Rolodex",
+  "version": "0.1.0",
+  "description": "Passively captures your Instagram and Facebook DMs as you browse, so your Rolodex AI has the full picture of your relationships.",
+  "permissions": ["storage", "activeTab", "downloads"],
+  "host_permissions": [
+    "https://www.instagram.com/*",
+    "https://instagram.com/*",
+    "https://www.facebook.com/*",
+    "https://facebook.com/*",
+    "https://www.messenger.com/*",
+    "https://messenger.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.instagram.com/direct/*",
+        "https://instagram.com/direct/*"
+      ],
+      "js": ["content-instagram.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/messages/*",
+        "https://www.messenger.com/t/*",
+        "https://messenger.com/t/*"
+      ],
+      "js": ["content-facebook.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Rolodex Capture",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

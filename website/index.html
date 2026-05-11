@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PILK — AI for the people who matter</title>
+<meta name="description" content="PILK reads your messages, finds the people slipping out of touch, and drafts the message in your voice. So you never lose the relationships that matter." />
+<meta property="og:title" content="PILK — AI for the people who matter" />
+<meta property="og:description" content="PILK reads your messages, finds the people slipping out of touch, and drafts the message in your voice." />
+<meta property="og:url" content="https://pilk.ai" />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="128x128" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<style>
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(ellipse at top, #1a1530 0%, #0a0814 60%, #050309 100%);
+    color: #e7e4f5;
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: #b39df0; text-decoration: none; }
+  a:hover { color: #d4c2ff; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 96px; }
+  nav .logo-link { display: inline-flex; align-items: center; }
+  nav .logo-img { height: 56px; width: auto; display: block; }
+  .hero-mark { display: block; margin: 0 auto 32px; width: 180px; height: 180px; }
+  nav .links a { margin-left: 24px; font-size: 14px; color: #9b94b8; }
+  nav .links a:hover { color: #fff; }
+  header.hero { text-align: center; padding: 32px 0 96px; }
+  header.hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    margin: 0 0 24px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #fff 0%, #b39df0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  header.hero p.sub {
+    font-size: clamp(18px, 2.4vw, 22px);
+    color: #b8b3d0;
+    max-width: 640px;
+    margin: 0 auto 40px;
+  }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    color: #fff;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 40px rgba(139, 92, 246, 0.55); color: #fff; }
+  .btn-ghost {
+    background: rgba(255,255,255,0.05);
+    color: #e7e4f5;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  section { padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+  section h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    margin: 0 0 16px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  section p.lead { font-size: 18px; color: #b8b3d0; max-width: 700px; margin: 0 0 48px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .feature {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .feature .icon { font-size: 28px; margin-bottom: 12px; }
+  .feature h3 { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: #fff; }
+  .feature p { margin: 0; color: #9b94b8; font-size: 15px; }
+  .how-it-works { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  .step { position: relative; padding-top: 16px; }
+  .step .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #fff; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step h3 { margin: 0 0 8px; color: #fff; }
+  .step p { margin: 0; color: #9b94b8; font-size: 15px; }
+  footer { padding: 64px 0 32px; border-top: 1px solid rgba(255,255,255,0.05); color: #6b6589; font-size: 14px; }
+  footer .row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer .legal a { margin-left: 16px; color: #9b94b8; }
+  footer .legal a:hover { color: #fff; }
+  @media (max-width: 640px) {
+    nav { margin-bottom: 48px; }
+    nav .links a { margin-left: 12px; }
+    section { padding: 56px 0; }
+    footer .row { flex-direction: column; align-items: flex-start; }
+    footer .legal a { margin: 0 16px 0 0; }
+  }
+
+  /* ----- animated connection background ----- */
+  .bg-orbs {
+    position: fixed; inset: 0; z-index: -2;
+    pointer-events: none; overflow: hidden;
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(70px); opacity: 0.32;
+    will-change: transform;
+  }
+  .orb-1 { width: 420px; height: 420px;
+    background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+    top: -12%; left: -8%;
+    animation: drift1 26s ease-in-out infinite alternate; }
+  .orb-2 { width: 520px; height: 520px;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    top: 28%; right: -18%;
+    animation: drift2 32s ease-in-out infinite alternate; }
+  .orb-3 { width: 360px; height: 360px;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    bottom: -12%; left: 28%;
+    animation: drift3 30s ease-in-out infinite alternate; }
+  .orb-4 { width: 280px; height: 280px;
+    background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+    top: 55%; left: 18%;
+    animation: drift4 22s ease-in-out infinite alternate; }
+  @keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(120px, 90px) scale(1.12); } }
+  @keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-140px, 70px) scale(0.88); } }
+  @keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(90px, -110px) scale(1.18); } }
+  @keyframes drift4 { from { transform: translate(0,0) scale(1); } to { transform: translate(-70px, 90px) scale(0.92); } }
+
+  .bg-network {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; opacity: 0.55;
+  }
+  .bg-network .links line {
+    stroke: rgba(179, 157, 240, 0.35);
+    stroke-width: 0.6;
+    stroke-dasharray: 3 6;
+    animation: shimmer 10s linear infinite;
+  }
+  .bg-network .nodes circle {
+    fill: #b39df0;
+    filter: drop-shadow(0 0 6px #8b5cf6);
+    animation: pulse 4.5s ease-in-out infinite;
+  }
+  .bg-network .nodes circle:nth-child(4n)   { animation-delay: -0.8s; }
+  .bg-network .nodes circle:nth-child(4n+1) { animation-delay: -1.6s; }
+  .bg-network .nodes circle:nth-child(4n+2) { animation-delay: -2.4s; }
+  .bg-network .nodes circle:nth-child(4n+3) { animation-delay: -3.2s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.45; transform: scale(1); transform-origin: center; }
+    50%      { opacity: 1;    transform: scale(1.55); }
+  }
+  @keyframes shimmer { to { stroke-dashoffset: -36; } }
+
+  .wrap { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .orb, .bg-network .nodes circle, .bg-network .links line { animation: none !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<svg class="bg-network" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g class="links">
+    <line x1="120" y1="140" x2="340" y2="90"/>
+    <line x1="340" y1="90"  x2="580" y2="200"/>
+    <line x1="580" y1="200" x2="820" y2="130"/>
+    <line x1="820" y1="130" x2="1080" y2="240"/>
+    <line x1="120" y1="140" x2="220" y2="340"/>
+    <line x1="220" y1="340" x2="480" y2="290"/>
+    <line x1="480" y1="290" x2="580" y2="200"/>
+    <line x1="480" y1="290" x2="720" y2="420"/>
+    <line x1="720" y1="420" x2="980" y2="370"/>
+    <line x1="980" y1="370" x2="1080" y2="240"/>
+    <line x1="220" y1="340" x2="180" y2="580"/>
+    <line x1="180" y1="580" x2="400" y2="640"/>
+    <line x1="400" y1="640" x2="640" y2="700"/>
+    <line x1="640" y1="700" x2="880" y2="620"/>
+    <line x1="880" y1="620" x2="1100" y2="560"/>
+    <line x1="1100" y1="560" x2="980" y2="370"/>
+    <line x1="400" y1="640" x2="480" y2="290"/>
+    <line x1="640" y1="700" x2="720" y2="420"/>
+    <line x1="880" y1="620" x2="720" y2="420"/>
+  </g>
+  <g class="nodes">
+    <circle cx="120"  cy="140" r="2.5"/>
+    <circle cx="340"  cy="90"  r="3"/>
+    <circle cx="580"  cy="200" r="3.5"/>
+    <circle cx="820"  cy="130" r="2.5"/>
+    <circle cx="1080" cy="240" r="3"/>
+    <circle cx="220"  cy="340" r="3"/>
+    <circle cx="480"  cy="290" r="4"/>
+    <circle cx="720"  cy="420" r="3.5"/>
+    <circle cx="980"  cy="370" r="3"/>
+    <circle cx="180"  cy="580" r="2.5"/>
+    <circle cx="400"  cy="640" r="3.5"/>
+    <circle cx="640"  cy="700" r="3"/>
+    <circle cx="880"  cy="620" r="3"/>
+    <circle cx="1100" cy="560" r="2.5"/>
+  </g>
+</svg>
+
+
+<div class="wrap">
+
+  <nav>
+    <a href="/" class="logo-link" aria-label="PILK AI home">
+      <img src="/logo.png" alt="PILK AI" class="logo-img" />
+    </a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="mailto:aaron@pilk.ai">Contact</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <img src="/logo.png" alt="" class="hero-mark" />
+    <h1>AI for the people<br />who matter.</h1>
+    <p class="sub">PILK reads your messages, finds the people slipping out of touch, and drafts the message in your voice — so you never lose the relationships that matter.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:aaron@pilk.ai?subject=PILK%20early%20access">Get early access</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+  </header>
+
+  <section id="features">
+    <h2>What PILK does</h2>
+    <p class="lead">Most of us lose touch with the people we love not because we don't care — but because life is loud. PILK is the quiet system that keeps you connected.</p>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">💬</div>
+        <h3>Reads every channel</h3>
+        <p>iMessage, Instagram DMs, Facebook Messenger, Telegram, WhatsApp, email. One feed of your entire relationship surface.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎯</div>
+        <h3>Knows who's drifting</h3>
+        <p>PILK scores every relationship by how long it's been, what the conversation was about, and how close you are. Surfaces the people you'd regret losing.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">✍️</div>
+        <h3>Writes in your voice</h3>
+        <p>Every draft sounds like you — not a chatbot. Learned from how you actually text. Approve, edit, or send with one tap.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🔒</div>
+        <h3>Private by design</h3>
+        <p>Your messages stay on your machine. Credentials in macOS Keychain. PILK only sends what you approve.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <p class="lead">Five minutes of setup. Two minutes a day. The rest is automatic.</p>
+    <div class="how-it-works">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Connect your channels</h3>
+        <p>Plug in iMessage, IG, Telegram, and any others you use. PILK reads them locally on your Mac.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Teach PILK your circle</h3>
+        <p>Tag a few people once — family, partner, close friends — and PILK auto-tiers everyone else.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Get a daily nudge</h3>
+        <p>Every morning, PILK surfaces 3–5 people worth reaching out to today, with a draft for each.</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <h3>Send or skip</h3>
+        <p>Approve a draft, tweak it, snooze the person, or mark them handled. PILK learns your judgment over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="row">
+      <div>© 2026 PILK · Made for the people you care about.</div>
+      <div class="legal">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/data-deletion.html">Data deletion</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

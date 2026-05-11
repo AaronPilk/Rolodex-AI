@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Rolodex runtime
+*.bak.*
+rolodex.json.backup
+fix_pilk_app.py.bak.*
+
+# PILK / Rolodex local state — contains personal message data, NEVER commit
+.rolodex-ai/
+.rolodex-ai-*/
+.tmp-rolodex-home/
+
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+
+# Local zip/tarball outputs
+*.zip
+*.tar.gz
+zim*
+
+# Original logo files live in /website/ — exclude the unprocessed copies at repo root
+/Pilk Ai LOGO*.png

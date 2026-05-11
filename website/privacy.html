@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — PILK</title>
+<meta name="description" content="PILK Privacy Policy. What we collect, how we use it, and how to delete your data." />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="128x128" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<style>
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(ellipse at top, #1a1530 0%, #0a0814 60%, #050309 100%);
+    color: #e7e4f5;
+    min-height: 100vh;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #b39df0; }
+  a:hover { color: #d4c2ff; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 24px 80px; }
+  nav { margin-bottom: 48px; }
+  nav .logo-link { display: inline-flex; align-items: center; text-decoration: none; }
+  nav .logo-img { height: 48px; width: auto; display: block; }
+  h1 { font-size: 40px; margin: 0 0 8px; color: #fff; letter-spacing: -0.5px; }
+  .meta { color: #8b85a8; font-size: 14px; margin-bottom: 48px; }
+  h2 { color: #fff; margin: 40px 0 12px; font-size: 22px; letter-spacing: -0.2px; }
+  h3 { color: #fff; margin: 24px 0 8px; font-size: 17px; }
+  p, li { color: #c8c4dc; }
+  ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .callout {
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  footer { color: #6b6589; font-size: 14px; margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.05); }
+  footer a { margin-right: 16px; color: #9b94b8; }
+
+  /* ----- animated connection background ----- */
+  .bg-orbs {
+    position: fixed; inset: 0; z-index: -2;
+    pointer-events: none; overflow: hidden;
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(70px); opacity: 0.32;
+    will-change: transform;
+  }
+  .orb-1 { width: 420px; height: 420px;
+    background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
+    top: -12%; left: -8%;
+    animation: drift1 26s ease-in-out infinite alternate; }
+  .orb-2 { width: 520px; height: 520px;
+    background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+    top: 28%; right: -18%;
+    animation: drift2 32s ease-in-out infinite alternate; }
+  .orb-3 { width: 360px; height: 360px;
+    background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+    bottom: -12%; left: 28%;
+    animation: drift3 30s ease-in-out infinite alternate; }
+  .orb-4 { width: 280px; height: 280px;
+    background: radial-gradient(circle, #c084fc 0%, transparent 70%);
+    top: 55%; left: 18%;
+    animation: drift4 22s ease-in-out infinite alternate; }
+  @keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(120px, 90px) scale(1.12); } }
+  @keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-140px, 70px) scale(0.88); } }
+  @keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(90px, -110px) scale(1.18); } }
+  @keyframes drift4 { from { transform: translate(0,0) scale(1); } to { transform: translate(-70px, 90px) scale(0.92); } }
+
+  .bg-network {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; opacity: 0.55;
+  }
+  .bg-network .links line {
+    stroke: rgba(179, 157, 240, 0.35);
+    stroke-width: 0.6;
+    stroke-dasharray: 3 6;
+    animation: shimmer 10s linear infinite;
+  }
+  .bg-network .nodes circle {
+    fill: #b39df0;
+    filter: drop-shadow(0 0 6px #8b5cf6);
+    animation: pulse 4.5s ease-in-out infinite;
+  }
+  .bg-network .nodes circle:nth-child(4n)   { animation-delay: -0.8s; }
+  .bg-network .nodes circle:nth-child(4n+1) { animation-delay: -1.6s; }
+  .bg-network .nodes circle:nth-child(4n+2) { animation-delay: -2.4s; }
+  .bg-network .nodes circle:nth-child(4n+3) { animation-delay: -3.2s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.45; transform: scale(1); transform-origin: center; }
+    50%      { opacity: 1;    transform: scale(1.55); }
+  }
+  @keyframes shimmer { to { stroke-dashoffset: -36; } }
+
+  .wrap { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .orb, .bg-network .nodes circle, .bg-network .links line { animation: none !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<svg class="bg-network" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <g class="links">
+    <line x1="120" y1="140" x2="340" y2="90"/>
+    <line x1="340" y1="90"  x2="580" y2="200"/>
+    <line x1="580" y1="200" x2="820" y2="130"/>
+    <line x1="820" y1="130" x2="1080" y2="240"/>
+    <line x1="120" y1="140" x2="220" y2="340"/>
+    <line x1="220" y1="340" x2="480" y2="290"/>
+    <line x1="480" y1="290" x2="580" y2="200"/>
+    <line x1="480" y1="290" x2="720" y2="420"/>
+    <line x1="720" y1="420" x2="980" y2="370"/>
+    <line x1="980" y1="370" x2="1080" y2="240"/>
+    <line x1="220" y1="340" x2="180" y2="580"/>
+    <line x1="180" y1="580" x2="400" y2="640"/>
+    <line x1="400" y1="640" x2="640" y2="700"/>
+    <line x1="640" y1="700" x2="880" y2="620"/>
+    <line x1="880" y1="620" x2="1100" y2="560"/>
+    <line x1="1100" y1="560" x2="980" y2="370"/>
+    <line x1="400" y1="640" x2="480" y2="290"/>
+    <line x1="640" y1="700" x2="720" y2="420"/>
+    <line x1="880" y1="620" x2="720" y2="420"/>
+  </g>
+  <g class="nodes">
+    <circle cx="120"  cy="140" r="2.5"/>
+    <circle cx="340"  cy="90"  r="3"/>
+    <circle cx="580"  cy="200" r="3.5"/>
+    <circle cx="820"  cy="130" r="2.5"/>
+    <circle cx="1080" cy="240" r="3"/>
+    <circle cx="220"  cy="340" r="3"/>
+    <circle cx="480"  cy="290" r="4"/>
+    <circle cx="720"  cy="420" r="3.5"/>
+    <circle cx="980"  cy="370" r="3"/>
+    <circle cx="180"  cy="580" r="2.5"/>
+    <circle cx="400"  cy="640" r="3.5"/>
+    <circle cx="640"  cy="700" r="3"/>
+    <circle cx="880"  cy="620" r="3"/>
+    <circle cx="1100" cy="560" r="2.5"/>
+  </g>
+</svg>
+
+<div class="wrap">
+
+  <nav><a href="/" class="logo-link" aria-label="PILK AI home"><img src="/logo.png" alt="PILK AI" class="logo-img" /></a></nav>
+
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: May 11, 2026</p>
+
+  <div class="callout">
+    <p><strong>The short version:</strong> PILK is a personal AI that runs on your own computer. It reads your messages locally to help you stay in touch with the people you care about. Your message data stays on your machine. We don't sell anything. We don't show ads. You can delete everything at any time.</p>
+  </div>
+
+  <h2>1. Who we are</h2>
+  <p>PILK ("we", "us", "our") is an AI assistant that helps individuals maintain personal relationships. PILK is operated by Aaron Pilkington. You can reach us at <a href="mailto:aaron@pilk.ai">aaron@pilk.ai</a>.</p>
+
+  <h2>2. Information we collect</h2>
+
+  <h3>2.1 Data accessed locally on your device</h3>
+  <p>When you connect PILK to your accounts, it reads the following data <strong>directly on your computer</strong>. This data is not transmitted to any external server we operate.</p>
+  <ul>
+    <li><strong>iMessage history</strong> — read from your local <code>chat.db</code> file. Used to identify people you communicate with and recent conversation topics.</li>
+    <li><strong>macOS Contacts</strong> — read on demand to associate phone numbers and emails with names. Only accessed when you explicitly run the contact import command.</li>
+    <li><strong>Instagram and Facebook Messenger DMs</strong> — fetched via Meta's official Graph API using the access token you authorize. PILK only reads conversations from the Business Page you connect.</li>
+    <li><strong>Telegram, WhatsApp, and X messages</strong> — fetched via each platform's official API when you connect them.</li>
+    <li><strong>Email metadata</strong> — if you connect Gmail, PILK reads sender, subject, and date to score relationship recency. Bodies of emails are not stored.</li>
+  </ul>
+
+  <h3>2.2 Data you provide directly</h3>
+  <ul>
+    <li>Channel credentials (access tokens, bot tokens) — stored encrypted in macOS Keychain on your device.</li>
+    <li>Tags, notes, and tier settings you create about people.</li>
+    <li>Feedback you provide on PILK's drafted messages (used to improve future drafts).</li>
+  </ul>
+
+  <h3>2.3 Data we receive from third-party APIs</h3>
+  <p>When you connect a messaging channel, the platform (Meta, Telegram, etc.) shares with PILK the messages and metadata necessary to surface conversations in your inbox. Each platform's own privacy policy governs the data they share.</p>
+
+  <h2>3. How we use your information</h2>
+  <ul>
+    <li>To identify which people you communicate with and how often.</li>
+    <li>To score relationships by recency, depth, and cadence so PILK can surface the people most worth reaching out to.</li>
+    <li>To generate personalized message drafts in your writing voice.</li>
+    <li>To learn your preferences over time (which drafts you accept, edit, or reject).</li>
+    <li>To deliver daily reminders via Telegram, email, or in-app notifications.</li>
+  </ul>
+
+  <h2>4. Third-party services we use</h2>
+  <p>PILK relies on a small number of third-party services to function. When you use PILK, certain data is shared with these services as described below.</p>
+
+  <h3>4.1 Anthropic (Claude API)</h3>
+  <p>To draft personalized messages, PILK sends a minimal context window (recent messages with a specific person, tone preferences, relationship tier) to Anthropic's Claude API. Anthropic processes this prompt and returns a draft. Anthropic does not use this data to train its models. See <a href="https://www.anthropic.com/privacy">Anthropic's privacy policy</a>.</p>
+
+  <h3>4.2 Meta (Facebook, Instagram)</h3>
+  <p>When you connect Instagram or Facebook Messenger, PILK uses Meta's Graph API to read and send messages. Meta receives the same access requests any other Page management tool would. See <a href="https://www.facebook.com/policy.php">Meta's data policy</a>.</p>
+
+  <h3>4.3 Other platforms</h3>
+  <p>Telegram, WhatsApp (via Twilio), and X (Twitter) APIs are used only when you explicitly connect them. Each provider's own privacy policy applies.</p>
+
+  <h2>5. Where your data is stored</h2>
+  <ul>
+    <li><strong>Your message history, contact data, and relationship records</strong> are stored locally on your Mac in <code>~/.rolodex-ai/</code>. They never leave your device unless you explicitly export them.</li>
+    <li><strong>Credentials</strong> are stored in macOS Keychain (encrypted by macOS).</li>
+    <li><strong>API requests to Anthropic or third-party platforms</strong> transit over HTTPS. We retain no logs of the prompts sent.</li>
+    <li><strong>PILK has no central server that stores your messages.</strong></li>
+  </ul>
+
+  <h2>6. Data retention</h2>
+  <p>PILK retains your local data on your device until you delete it. We do not retain copies of your data on any remote system. If you uninstall PILK or delete the <code>~/.rolodex-ai/</code> directory, your data is gone.</p>
+
+  <h2>7. Your rights</h2>
+  <p>You can:</p>
+  <ul>
+    <li>Access all data PILK has about you (it's in <code>~/.rolodex-ai/state/rolodex/rolodex.json</code> on your Mac).</li>
+    <li>Delete all data PILK has about you (see our <a href="/data-deletion.html">Data Deletion page</a>).</li>
+    <li>Disconnect any channel at any time from PILK's Connections page. PILK will revoke its stored credentials.</li>
+    <li>Email <a href="mailto:aaron@pilk.ai">aaron@pilk.ai</a> with any privacy questions or requests.</li>
+  </ul>
+
+  <h2>8. Children's privacy</h2>
+  <p>PILK is not intended for users under 18. We do not knowingly collect data from anyone under 18.</p>
+
+  <h2>9. Changes to this policy</h2>
+  <p>If we materially change this policy, we'll update the "Last updated" date above and notify users via email or in-app message. Continued use after a change means you accept the new policy.</p>
+
+  <h2>10. Contact</h2>
+  <p>Questions, requests, complaints: <a href="mailto:aaron@pilk.ai">aaron@pilk.ai</a></p>
+
+  <footer>
+    <a href="/">Home</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/data-deletion.html">Data deletion</a>
+  </footer>
+
+</div>
+</body>
+</html>
